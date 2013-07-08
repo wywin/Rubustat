@@ -6,6 +6,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
 def getWeather():
 	result = pywapi.get_weather_from_yahoo( "37216" , units = 'imperial' )
 	f = open("static/weather.js", "w")
@@ -39,5 +40,4 @@ def my_form_post():
     return redirect(url_for('my_form'))
 
 if __name__ == "__main__":
-    app.debug = True
-    app.run()
+    app.run(host='0.0.0.0')
