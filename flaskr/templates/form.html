@@ -23,6 +23,7 @@ input{
     text-align: center
 }
 </style>
+<center>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -32,6 +33,7 @@ input{
     </ul>
   {% endif %}
 {% endwith %}
+</center>
 <html lang="en">
 <center>
 <script src="../static/weather.js"></script>

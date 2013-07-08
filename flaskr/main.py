@@ -35,7 +35,7 @@ def my_form_post():
     f = open("set_temp", "w")
     f.write(newTargetTemp)
     f.close()
-    flash("New temperature set!")
+    flash("New temperature of " + newTargetTemp + " set!")
     return redirect(url_for('my_form'))
 
 if __name__ == "__main__":
