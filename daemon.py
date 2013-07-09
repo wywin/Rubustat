@@ -8,21 +8,22 @@ import time
 active_hysteresis = 0.0
 inactive_hysteresis = 0.5
 outdoor_temp_buffer = 5
+os.chdir(os.getcwd())
+while 1 == 1:
 
-while true:
 
-    indoor_temp = subprocess.check_output("get_indoor_temp.sh")
-    outdoor_temp = subprocess.check_output("get_outdoor_temp.sh")
-     
+    indoor_temp = subprocess.check_output("./get_indoor_temp.sh")
+    outdoor_temp = subprocess.check_output("./get_outdoor_temp.sh")
+
     file = open("set_temp", "r")
     set_temp = float(file.readline())
     file.close()
      
-    hvac_state = int(subprocess.check_output("get_hvac_state.sh")
+    hvac_state = int(subprocess.check_output("./get_hvac_state.sh"))
     
     # heater mode
     if outdoor_temp < set_temp:
-        if hvac_state == 0 #idle
+        if hvac_state == 0: #idle
             if indoor_temp < set_temp - inactive_hysteresis:
                 os.system("hvac_heat.sh")
                 hvac_state = 1
@@ -37,11 +38,11 @@ while true:
             if indoor_temp > set_temp + inactive_hysteresis:
                 os.system("hvac_cool.sh")
                 hvac_state = -1
-        elif hvac_state == -1 #cooling
+        elif hvac_state == -1: #cooling
             if indoor_temp < set_temp - active_hysteresis:
                 os.system("hvac_idle.sh")
                 hvac_state = 0
-        elif hvac_state == 1 # it's hot out, why is the heater on?
+        elif hvac_state == 1: # it's hot out, why is the heater on?
                 os.system("hvac_idle.sh")
 
-    sleep(10)
+    time.sleep(10)
