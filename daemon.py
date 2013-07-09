@@ -19,7 +19,7 @@ while 1 == 1:
     set_temp = float(file.readline())
     file.close()
      
-    hvac_state = float(subprocess.check_output("./get_hvac_state.sh"))
+    hvac_state = int(subprocess.check_output("./get_hvac_state.sh"))
     
     # heater mode
     if outdoor_temp < set_temp:
