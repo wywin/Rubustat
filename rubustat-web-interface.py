@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 #start the daemon in the background
-subprocess.call("./rubustat-daemon.py", shell=True)
+subprocess.Popen("./rubustat-daemon.py", shell=True)
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( "37216" , units = 'imperial' )
