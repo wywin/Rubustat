@@ -8,19 +8,21 @@ import time
 active_hysteresis = 0.0
 inactive_hysteresis = 0.5
 outdoor_temp_buffer = 5
-os.chdir(os.getcwd())
+
+DEBUG = 0
+
+#infinite loop is the same as a daemon, right?
 while 1 == 1:
 
 
     indoor_temp = float(subprocess.check_output("./get_indoor_temp.sh"))
     outdoor_temp = float(subprocess.check_output("./get_outdoor_temp.sh"))
+    hvac_state = int(subprocess.check_output("./get_hvac_state.sh"))
 
     file = open("set_temp", "r")
     set_temp = float(file.readline())
     file.close()
      
-    hvac_state = int(subprocess.check_output("./get_hvac_state.sh"))
-    
     # heater mode
     if outdoor_temp < set_temp:
         if hvac_state == 0: #idle
@@ -46,9 +48,11 @@ while 1 == 1:
                 os.system("./hvac_idle.sh")
 
     #debug stuff
-    print "Sleepy time!"
-    print "hvac_state = " + str(hvac_state)
-    print "indoor_temp = " + str(indoor_temp)
-    print "outdoor_temp = " + str(outdoor_temp)
-    print "set_temp = " + str(set_temp)
+    if DEBUG == 1:
+        print "Sleepy time!"
+        print "hvac_state = " + str(hvac_state)
+        print "indoor_temp = " + str(indoor_temp)
+        print "outdoor_temp = " + str(outdoor_temp)
+        print "set_temp = " + str(set_temp)
+
     time.sleep(10)

@@ -21,6 +21,7 @@ def my_form():
     targetTemp = f.readline()
     f.close()
     weatherString = getWeather()
+    indoor_temp = subprocess.check_output("get_indoor_temp.sh")
     return render_template("form.html", targetTemp = targetTemp, weatherString = weatherString)
 
 @app.route("/", methods=['POST'])
