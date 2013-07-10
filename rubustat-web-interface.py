@@ -1,11 +1,16 @@
 #!/usr/bin/python
 import pywapi
+import subprocess
+
 
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
 
 app = Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+#start the daemon in the background
+subprocess.call("./rubustat-daemon.py", shell=True)
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( "37216" , units = 'imperial' )
@@ -21,7 +26,7 @@ def my_form():
     targetTemp = f.readline()
     f.close()
     weatherString = getWeather()
-    indoor_temp = subprocess.check_output("get_indoor_temp.sh")
+    indoor_temp = subprocess.check_output("./etc.sh indoor_temp")
     return render_template("form.html", targetTemp = targetTemp, weatherString = weatherString)
 
 @app.route("/", methods=['POST'])

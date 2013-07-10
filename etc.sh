@@ -1,4 +1,4 @@
-#! /bin/bash -x
+#! /bin/bash
 #shamelessly stolen and modified from http://makeatronics.blogspot.com/2013/04/thermostat-software.html
 if [ "$1" = "outdoor_temp" ]
 	then
