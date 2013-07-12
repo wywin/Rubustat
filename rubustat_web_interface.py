@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import pywapi
 import subprocess
-from rubustat_daemon import indoor_temp
 
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
@@ -13,6 +12,10 @@ ZIP = 37216
 
 #start the daemon in the background
 subprocess.Popen("./rubustat_daemon.py", shell=True)
+
+def getIndoorTemp():
+    #TODO: implement when hardware arrives
+    return 70
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
@@ -28,7 +31,7 @@ def my_form():
     targetTemp = f.readline()
     f.close()
     weatherString = getWeather()
-    indoor_temp = rubustat_daemon.getIndoorTemp()
+    indoor_temp = getIndoorTemp()
     return render_template("form.html", targetTemp = targetTemp, weatherString = weatherString)
 
 @app.route("/", methods=['POST'])
