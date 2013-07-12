@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import pywapi
 import subprocess
-from rubustat-daemon import *
+from rubustat_daemon import *
 
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
@@ -12,7 +12,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 ZIP = 37216
 
 #start the daemon in the background
-subprocess.Popen("./rubustat-daemon.py", shell=True)
+subprocess.Popen("./rubustat_daemon.py", shell=True)
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )

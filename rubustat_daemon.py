@@ -31,15 +31,15 @@ GPIO.setup(FAN_PIN, GPIO.OUT)
 
 ###Begin helper functions###
 
-def getOutdoorTemp:
+def getOutdoorTemp():
     outdoor_temp=os.popen("curl -s -m 20 http://rss.accuweather.com/rss/liveweather_rss.asp\?metric\=" + METRIC + "\&locCode\=" + ZIP + "| grep -i -m1 'currently' | grep -o '\-\?[0-9]\+'").read().strip()
     return outdoor_temp
 
-def getIndoorTemp:
+def getIndoorTemp():
     #TODO: implement when hardware arrives
     return 70
 
-def getHVACState:
+def getHVACState():
     heatStatus = os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip()
     coolStatus = os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip()
     fanStatus = os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip()
@@ -57,25 +57,25 @@ def getHVACState:
         #broken
         return 2
 
-def cool:
+def cool():
     GPIO.output(HEATER_PIN, False)
     GPIO.output(AC_PIN, True)
     GPIO.output(FAN_PIN, True)
     return -1
 
-def heat:
+def heat():
     GPIO.output(HEATER_PIN, True)
     GPIO.output(AC_PIN, False)
     GPIO.output(FAN_PIN, True)
     return 1
 
-def fan_to_idle: 
+def fan_to_idle(): 
     #to blow the rest of the heated / cooled air out of the system
     GPIO.output(HEATER_PIN, False)
     GPIO.output(AC_PIN, False)
     GPIO.output(FAN_PIN, True)
 
-def idle:
+def idle():
     GPIO.output(HEATER_PIN, False)
     GPIO.output(AC_PIN, False)
     GPIO.output(FAN_PIN, False)
