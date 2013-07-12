@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import pywapi
 import subprocess
-import rubustat_daemon
+from rubustat_daemon import indoor_temp
 
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
