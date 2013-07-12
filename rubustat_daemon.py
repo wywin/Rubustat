@@ -36,10 +36,9 @@ def getOutdoorTemp():
     return outdoor_temp
 
 def getHVACState():
-    heatStatus = os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip()
-    coolStatus = os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip()
-    fanStatus = os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip()
-    
+    heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
+    coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
+    fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
     if heatStatus == 1 and fanStatus == 1:
         #heating
         return 1
