@@ -32,7 +32,7 @@ GPIO.setup(FAN_PIN, GPIO.OUT)
 ###Begin helper functions###
 
 def getOutdoorTemp():
-    outdoor_temp=os.popen("curl -s -m 20 http://rss.accuweather.com/rss/liveweather_rss.asp\?metric\=" + METRIC + "\&locCode\=" + ZIP + "| grep -i -m1 'currently' | grep -o '\-\?[0-9]\+'").read().strip()
+    outdoor_temp=os.popen("curl -s -m 20 http://rss.accuweather.com/rss/liveweather_rss.asp\?metric\=" + str(METRIC) + "\&locCode\=" + str(ZIP) + "| grep -i -m1 'currently' | grep -o '\-\?[0-9]\+'").read().strip()
     return outdoor_temp
 
 def getIndoorTemp():
