@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import pywapi
 import subprocess
-from rubustat_daemon import *
+import rubustat_daemon
 
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
@@ -28,7 +28,7 @@ def my_form():
     targetTemp = f.readline()
     f.close()
     weatherString = getWeather()
-    indoor_temp = getIndoorTemp()
+    indoor_temp = rubustat_daemon.getIndoorTemp()
     return render_template("form.html", targetTemp = targetTemp, weatherString = weatherString)
 
 @app.route("/", methods=['POST'])
