@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import pywapi
 import subprocess
+from getIndoorTemp import getIndoorTemp
 
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
@@ -13,9 +14,8 @@ ZIP = 37216
 #start the daemon in the background
 subprocess.Popen("./rubustat_daemon.py", shell=True)
 
-def getIndoorTemp():
-    #TODO: implement when hardware arrives
-    return 70
+
+    
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )

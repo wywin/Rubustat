@@ -4,7 +4,7 @@ import sys
 import subprocess
 import os
 import time
-
+from getIndoorTemp import getIndoorTemp
 import RPi.GPIO as GPIO
 
 DEBUG = 0
@@ -34,10 +34,6 @@ GPIO.setup(FAN_PIN, GPIO.OUT)
 def getOutdoorTemp():
     outdoor_temp=os.popen("curl -s -m 20 http://rss.accuweather.com/rss/liveweather_rss.asp\?metric\=" + str(METRIC) + "\&locCode\=" + str(ZIP) + "| grep -i -m1 'currently' | grep -o '\-\?[0-9]\+'").read().strip()
     return outdoor_temp
-
-def getIndoorTemp():
-    #TODO: implement when hardware arrives
-    return 70
 
 def getHVACState():
     heatStatus = os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip()
