@@ -2,27 +2,29 @@
 
 <style type="text/css">
 	.aspectwrapper {
-	display: inline-block; /* shrink to fit */
-	width: 100%; /* whatever width you like */
-	position: relative; /* so .content can use position: absolute */
+		display: inline-block; /* shrink to fit */
+		width: 100%; /* whatever width you like */
+		position: relative; /* so .content can use position: absolute */
 	}
-.aspectwrapper::after {
-	padding-top: 34.25%; /* percentage of containing block _width_ */
-	display: block;
-	content: '';
+	.aspectwrapper::after {
+		padding-top: 34.25%; /* percentage of containing block _width_ */
+		display: block;
+		content: '';
 	}
-.content {
-	position: absolute;
-	top: 0; bottom: 0; right: 0; left: 0; /* follow the parent's edges */
-	outline: thin dashed green; /* just so you can see the box */
+	.content {
+		position: absolute;
+		top: 0; bottom: 0; right: 0; left: 0; /* follow the parent's edges */
+		outline: thin dashed green; /* just so you can see the box */
 	}
-input{
-
-    font-size: 64pt;
-    width: 256px;
-    text-align: center
-}
+	input {
+	    font-size: 64pt;
+	    width: 256px;
+	    text-align: center
+	}
 </style>
+
+<html lang="en">
+
 <center>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -33,12 +35,12 @@ input{
     </ul>
   {% endif %}
 {% endwith %}
-</center>
-<html lang="en">
-<center>
+
 {{ weatherString|safe}}
 </center>
+
 <script src="../static/increment.js"></script>
+
 <body>
 	<div class="aspectwrapper">
     	<div class="content">
