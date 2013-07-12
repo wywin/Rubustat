@@ -17,6 +17,6 @@ Our files:
 
 * static/: simple javascripts and pretty pictures.
 * templates/: Only form.html for now. It makes the web interface go!
-* rubustat-daemon.py: The backend that decides if we need to turn on the AC, heat, or just do nothing because it's nice outside. Handles the GPIO
+* rubustat-daemon.py: The backend that decides if we need to turn on the AC, heat, or just do nothing because it's nice outside. Handles the GPIO.
 * rubustat-web-interface.py: The Flask frontend, and the flagship of this project. Auto launches rubustat-daemon. ***BIG*** buttons because I have no idea how to do decent web design, and want to make it easy for tablet / smartphone users. Function > form! 
 * set_temp: a plaintext file for dictating the target temperature. Written to by rubustat-web-interface, and read by rubustat-daemon. Who needs databases?
