@@ -14,9 +14,6 @@ ZIP = 37216
 #start the daemon in the background
 subprocess.Popen("./rubustat_daemon.py", shell=True)
 
-
-    
-
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
     string = result['html_description']

@@ -76,7 +76,6 @@ def idle():
     GPIO.output(FAN_PIN, False)
     return 0
 
-
 ###begin main loop###
 #infinite loop is the same as a daemon, right?
 while 1 == 1:
