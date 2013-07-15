@@ -96,7 +96,7 @@ while 1 == 1:
         elif hvac_state == 1: #heating
             if indoor_temp > set_temp + active_hysteresis:
                 fan_to_idle()
-                time.sleep(300)
+                time.sleep(30)
                 hvac_state = idle()
         elif hvac_state == -1: # it's cold out, why is the AC running?
                 hvac_state = idle()
@@ -108,7 +108,7 @@ while 1 == 1:
         elif hvac_state == -1: #cooling
             if indoor_temp < set_temp - active_hysteresis:
                 fan_to_idle()
-                time.sleep(300)
+                time.sleep(30)
                 hvac_state = idle()
         elif hvac_state == 1: # it's hot out, why is the heater on?
                 hvac_state = idle()
