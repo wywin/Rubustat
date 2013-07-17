@@ -6,6 +6,7 @@ import os
 import time
 from getIndoorTemp import getIndoorTemp
 import RPi.GPIO as GPIO
+import urllib2
 
 DEBUG = 0
 
@@ -75,13 +76,21 @@ def idle():
     GPIO.output(AC_PIN, False)
     GPIO.output(FAN_PIN, False)
     return 0
+def internet_on():
+    try:
+        response=urllib2.urlopen('http://74.125.113.99',timeout=1)
+        return True
+    except urllib2.URLError as err: pass
+    return False
+
 
 ###begin main loop###
 #infinite loop is the same as a daemon, right?
 while 1 == 1:
 
     indoor_temp = float(getIndoorTemp())
-    outdoor_temp = float(getOutdoorTemp())
+    if internet_on():
+        outdoor_temp = float(getOutdoorTemp())
     hvac_state = int(getHVACState())
 
     file = open("set_temp", "r")
