@@ -78,7 +78,7 @@ def idle():
     return 0
 def internet_on():
     try:
-        response=urllib2.urlopen('http://74.125.113.99',timeout=1)
+        response=urllib2.urlopen('http://74.125.140.100',timeout=5)
         return True
     except urllib2.URLError as err: pass
     return False
@@ -89,6 +89,7 @@ def internet_on():
 while 1 == 1:
 
     indoor_temp = float(getIndoorTemp())
+    print internet_on()
     if internet_on():
         outdoor_temp = float(getOutdoorTemp())
     hvac_state = int(getHVACState())
