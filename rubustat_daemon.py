@@ -89,7 +89,6 @@ def internet_on():
 while 1 == 1:
 
     indoor_temp = float(getIndoorTemp())
-    print internet_on()
     if internet_on():
         outdoor_temp = float(getOutdoorTemp())
     hvac_state = int(getHVACState())
