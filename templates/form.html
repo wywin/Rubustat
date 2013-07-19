@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<!-- switch thanks to tutorial here: http://www.maissan.net/articles/jquery-switch -->
 <style type="text/css">
 	.aspectwrapper {
 		display: inline-block; /* shrink to fit */
@@ -21,6 +22,42 @@
 	    width: 256px;
 	    text-align: center
 	}
+
+	/*the switch bit*/
+
+
+    /* Container */
+    .switch {
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    width: 105px;
+    height: 30px;
+    vertical-align: middle;
+    }
+    /* Background image */
+    .switch .background {
+    background: url('static/switch-background.png');
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 161px;
+    height: 30px;
+    }
+    /* Mask */
+    .switch .mask {
+    background: url('satic/switch-mask.png');
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 105px;
+    height: 30px;
+    }
+
+
 </style>
 
 <html lang="en">
@@ -40,7 +77,7 @@
 </center>
 
 <script src="../static/increment.js"></script>
-
+<script src="../static/switch.js"></script>
 <body>
 	
 	<div class="aspectwrapper">
@@ -54,6 +91,9 @@
 		        <img src='static/plus-250.png' onclick="increment(this.parentNode.getElementsByTagName('input')[0]);" />
 		        <br>
 		        <input type="submit" style="height: 250px; width: 250px" name="my-form" value="Go!">
+
+			    <input type="checkbox" name="switch" value="Heat">
+
 		        </center>
 		    </form>
 		</div>
