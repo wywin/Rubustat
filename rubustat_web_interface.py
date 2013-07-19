@@ -12,7 +12,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 ZIP = 37216
 
 #start the daemon in the background
-subprocess.Popen("./rubustat_daemon.py", shell=True)
+#subprocess.Popen("./rubustat_daemon.py", shell=True)
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
@@ -24,20 +24,32 @@ def getWeather():
 
 @app.route('/')
 def my_form():
-    f = open("set_temp", "r")
-    targetTemp = f.readline()
+    f = open("status", "r")
+    targetTemp = f.readline().strip()
+    mode = f.readline()
     f.close()
     weatherString = getWeather()
     indoor_temp = getIndoorTemp()
-    return render_template("form.html", targetTemp = targetTemp, weatherString = weatherString)
+    #the switch is in the "cool" position when the checkbox is checked
+    if mode == "heat":
+        checked = ""
+    elif mode == "cool":
+        checked = "checked=\"checked\""
+    else:
+        checked = "Something broke"
+    return render_template("form.html", targetTemp = targetTemp, weatherString = weatherString, checked = checked)
 
 @app.route("/", methods=['POST'])
 def my_form_post():
 
     text = request.form['text']
+    mode = "heat"
+    #if it returns it, it is checked
+    if 'onoffswitch' in request.form:
+        mode = "cool"
     newTargetTemp = text.upper()
-    f = open("set_temp", "w")
-    f.write(newTargetTemp)
+    f = open("status", "w")
+    f.write(newTargetTemp + "\n" + mode)
     f.close()
     flash("New temperature of " + newTargetTemp + " set!")
     return redirect(url_for('my_form'))
