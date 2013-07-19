@@ -8,7 +8,7 @@ from getIndoorTemp import getIndoorTemp
 import RPi.GPIO as GPIO
 
 
-DEBUG = 0
+DEBUG = 1
 
 METRIC=0 # 0 for F, 1 for C
 ZIP=37216
@@ -117,7 +117,6 @@ while 1 == 1:
         print "Sleepy time!"
         print "hvac_state = " + str(hvac_state)
         print "indoor_temp = " + str(indoor_temp)
-        print "outdoor_temp = " + str(outdoor_temp)
         print "set_temp = " + str(set_temp)
 
     time.sleep(10)
