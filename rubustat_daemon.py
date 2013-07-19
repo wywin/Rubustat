@@ -88,7 +88,7 @@ while 1 == 1:
     # heater mode
     if mode == "heat":
         if hvac_state == 0: #idle
-            if indoor_temp < status - inactive_hysteresis:
+            if indoor_temp < set_temp - inactive_hysteresis:
                 hvac_state = heat()
         elif hvac_state == 1: #heating
             if indoor_temp > set_temp + active_hysteresis:
