@@ -89,8 +89,10 @@ def internet_on():
 while 1 == 1:
 
     indoor_temp = float(getIndoorTemp())
-    if internet_on():
+    try:
         outdoor_temp = float(getOutdoorTemp())
+    except ValueError:
+        pass
     hvac_state = int(getHVACState())
 
     file = open("set_temp", "r")
