@@ -98,7 +98,7 @@ while 1 == 1:
         elif hvac_state == -1: # it's cold out, why is the AC running?
                 hvac_state = idle()
     # ac mode
-    elif mode == "cool"
+    elif mode == "cool":
         if hvac_state == 0: #idle
             if indoor_temp > set_temp + inactive_hysteresis:
                 hvac_state = cool()
