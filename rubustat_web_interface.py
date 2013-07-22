@@ -30,6 +30,8 @@ def my_form():
     f.close()
     weatherString = getWeather()
     indoor_temp = getIndoorTemp()
+    
+    #find out what mode the system is in, and set the switch accordingly
     #the switch is in the "cool" position when the checkbox is checked
     if mode == "heat":
         checked = ""
@@ -44,9 +46,12 @@ def my_form_post():
 
     text = request.form['text']
     mode = "heat"
-    #if it returns it, it is checked
+    #default mode to heat, cool if
+    #the checkbox is returned, it is checked
+    #and cool mode has been selected
     if 'onoffswitch' in request.form:
         mode = "cool"
+    #TODO: input validation
     newTargetTemp = text.upper()
     f = open("status", "w")
     f.write(newTargetTemp + "\n" + mode)
