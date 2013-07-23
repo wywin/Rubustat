@@ -118,5 +118,10 @@ while 1 == 1:
         print "hvac_state = " + str(hvac_state)
         print "indoor_temp = " + str(indoor_temp)
         print "set_temp = " + str(set_temp)
-
+        log = open("debug.log", "a")
+        log.write("Sleepy time!")
+        log.write("hvac_state = " + str(hvac_state))
+        log.write("indoor_temp = " + str(indoor_temp))
+        log.write("set_temp = " + str(set_temp))
+        log.close()
     time.sleep(10)
