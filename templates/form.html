@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-
 <link rel="stylesheet" type="text/css" href="../static/lame.css">
 <script src="../static/increment.js"></script>
-
 <center>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -30,26 +28,14 @@
 <center>
 <div class="content">
 	Current indoor temp: 
-	
 	<p id="currentTemp">{{indoor_temp}}&deg</p>
 	<form action="." method="POST">
-	
-	
 	<img src='static/minus-250.png' onclick="decrement(document.getElementsByTagName('input')[1]);" />
 	<input type="text" name="text" value={{ targetTemp }}>
     <img src='static/plus-250.png' onclick="increment(document.getElementsByTagName('input')[1]);" />
-    
     <br><br>
     <input type="submit" style="height: 250px; width: 250px" name="my-form" value="Go!">
-
-    
     </form>
-
 </div>
 </center>
-
-	    	
-
-
-
 </html>

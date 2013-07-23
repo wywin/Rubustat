@@ -1,11 +1,8 @@
-
 /* switch thanks to this fancy generator: http://proto.io/freebies/onoff/ */
-
 li {
     list-style: none;
     font-size: 50px;
 }
-
 .switch {
 	float:right;
 	width:500px;
@@ -21,7 +18,6 @@ input {
 p#currentTemp {
 	font-size: 32pt;
 }
-
 img { 
    border:1px solid #ccc;
 }
