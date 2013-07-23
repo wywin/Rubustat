@@ -119,7 +119,7 @@ while 1 == 1:
         print "indoor_temp = " + str(indoor_temp)
         print "set_temp = " + str(set_temp)
         log = open("debug.log", "a")
-        log.write("Sleepy time!")
+        log.write("Report at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
         log.write("hvac_state = " + str(hvac_state))
         log.write("indoor_temp = " + str(indoor_temp))
         log.write("set_temp = " + str(set_temp))
