@@ -130,4 +130,4 @@ while 1 == 1:
         log.write("coolStatus = " + coolStatus)
         log.write("fanStatus = " + fanStatus)
         log.close()
-    time.sleep(10)
+    time.sleep(5)
