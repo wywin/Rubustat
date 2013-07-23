@@ -14,7 +14,6 @@ METRIC=0 # 0 for F, 1 for C
 ZIP=37216
 active_hysteresis = 0.0
 inactive_hysteresis = 0.5
-outdoor_temp_buffer = 5
 
 #GPIO pins
 HEATER_PIN = 23
@@ -130,4 +129,5 @@ while 1 == 1:
         log.write("coolStatus = " + coolStatus)
         log.write("fanStatus = " + fanStatus)
         log.close()
+    
     time.sleep(5)
