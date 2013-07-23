@@ -1,24 +1,29 @@
 
 /* switch thanks to this fancy generator: http://proto.io/freebies/onoff/ */
-.aspectwrapper {
-	display: inline-block; /* shrink to fit */
-	width: 100%; /* whatever width you like */
-	position: relative; /* so .content can use position: absolute */
+
+li {
+    list-style: none;
+    font-size: 50px;
 }
-.aspectwrapper::after {
-	padding-top: 34.25%; /* percentage of containing block _width_ */
-	display: block;
-	content: '';
+
+.switch {
+	float:right;
+	width:500px;
 }
-.content {
-	position: absolute;
-	top: 0; bottom: 0; right: 0; left: 0; /* follow the parent's edges */
-	outline: thin dashed green; /* just so you can see the box */
+.content{
+	float:left;
 }
 input {
     font-size: 64pt;
-    width: 256px;
+    width: 200px;
     text-align: center
+}
+p#currentTemp {
+	font-size: 32pt;
+}
+
+img { 
+   border:1px solid #ccc;
 }
 
 /*the switch bit*/

@@ -13,34 +13,43 @@
     </ul>
   {% endif %}
 {% endwith %}
-
-{{ weatherString|safe}}
-<div class="aspectwrapper">
-	<div class="content">
-	    <form action="." method="POST">
-
-	    	<br><br><br>
-	    	
-	    		<div class="onoffswitch">
-				<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" {{ checked }}>
-				<label class="onoffswitch-label" for="myonoffswitch">
-						<div class="onoffswitch-inner"></div>
-						<div class="onoffswitch-switch"></div>
-					</label>
-				</div> 
-
-	    	<img src='static/minus-250.png' onclick="decrement(document.getElementsByTagName('input')[1]);" />
-
-	        <input type="text" name="text" value={{ targetTemp }}>
-
-	        <img src='static/plus-250.png' onclick="increment(document.getElementsByTagName('input')[1]);" />
-	        <br>
-	        <input type="submit" style="height: 250px; width: 250px" name="my-form" value="Go!">
-
-	        </center>
-	    </form>
-	</div>
+</center>
+<div class="switch">
+	<center>
+	{{ weatherString|safe}}
+	<br>
+	<div class="onoffswitch">
+	<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" {{ checked }}>
+	<label class="onoffswitch-label" for="myonoffswitch">
+			<div class="onoffswitch-inner"></div>
+			<div class="onoffswitch-switch"></div>
+	</label>
+	</div> 
+	</center>	
 </div>
+<center>
+<div class="content">
+	Current indoor temp: 
 	
+	<p id="currentTemp">{{indoor_temp}}&deg</p>
+	<form action="." method="POST">
+	
+	
+	<img src='static/minus-250.png' onclick="decrement(document.getElementsByTagName('input')[1]);" />
+	<input type="text" name="text" value={{ targetTemp }}>
+    <img src='static/plus-250.png' onclick="increment(document.getElementsByTagName('input')[1]);" />
+    
+    <br><br>
+    <input type="submit" style="height: 250px; width: 250px" name="my-form" value="Go!">
+
+    
+    </form>
+
+</div>
+</center>
+
+	    	
+
+
 
 </html>

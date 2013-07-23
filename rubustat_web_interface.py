@@ -12,7 +12,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 ZIP = 37216
 
 #start the daemon in the background
-subprocess.Popen("./rubustat_daemon.py", shell=True)
+#subprocess.Popen("./rubustat_daemon.py", shell=True)
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
@@ -39,15 +39,18 @@ def my_form():
         checked = "checked=\"checked\""
     else:
         checked = "Something broke"
-    return render_template("form.html", targetTemp = targetTemp, weatherString = weatherString, checked = checked)
+    return render_template("form.html", targetTemp = targetTemp, \
+                                        weatherString = weatherString, \
+                                        checked = checked, \
+                                        indoor_temp = indoor_temp)
 
 @app.route("/", methods=['POST'])
 def my_form_post():
 
     text = request.form['text']
     mode = "heat"
-    #default mode to heat, cool if
-    #the checkbox is returned, it is checked
+    #default mode to heat 
+    #cool if the checkbox is returned, it is checked
     #and cool mode has been selected
     if 'onoffswitch' in request.form:
         mode = "cool"
