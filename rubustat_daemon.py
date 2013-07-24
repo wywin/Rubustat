@@ -28,6 +28,9 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(HEATER_PIN, GPIO.OUT)
 GPIO.setup(AC_PIN, GPIO.OUT)
 GPIO.setup(FAN_PIN, GPIO.OUT)
+os.popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export")
+os.popen("echo " + str(COOL_PIN) + " > /sys/class/gpio/export")
+os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
 
 ###Begin helper functions###
 
