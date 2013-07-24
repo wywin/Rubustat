@@ -88,25 +88,57 @@ while 1 == 1:
     if mode == "heat":
         if hvac_state == 0: #idle
             if indoor_temp < set_temp - inactive_hysteresis:
+                if debug == 1:
+                    log = open("debug.log", "a")
+                    log.write("Switching to heat at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.close()
                 hvac_state = heat()
         elif hvac_state == 1: #heating
             if indoor_temp > set_temp + active_hysteresis:
+                if debug == 1:
+                    log = open("debug.log", "a")
+                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.close()
                 fan_to_idle()
                 time.sleep(30)
+                if debug == 1:
+                    log = open("debug.log", "a")
+                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.close()
                 hvac_state = idle()
         elif hvac_state == -1: # it's cold out, why is the AC running?
+                if debug == 1:
+                    log = open("debug.log", "a")
+                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.close()
                 hvac_state = idle()
     # ac mode
     elif mode == "cool":
         if hvac_state == 0: #idle
             if indoor_temp > set_temp + inactive_hysteresis:
+                if debug == 1:
+                    log = open("debug.log", "a")
+                    log.write("Switching to cool at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.close()
                 hvac_state = cool()
         elif hvac_state == -1: #cooling
             if indoor_temp < set_temp - active_hysteresis:
+                if debug == 1:
+                    log = open("debug.log", "a")
+                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.close()
                 fan_to_idle()
                 time.sleep(30)
+                if debug == 1:
+                    log = open("debug.log", "a")
+                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.close()
                 hvac_state = idle()
         elif hvac_state == 1: # it's hot out, why is the heater on?
+                if debug == 1:
+                    log = open("debug.log", "a")
+                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.close()
                 hvac_state = idle()
     else:
         print "It broke."
