@@ -72,9 +72,12 @@ def my_form_post():
     else:
         flash("That is not a two digit number! Try again!")
         return redirect(url_for('my_form'))
+
 @app.route('/_liveTemp', methods= ['GET'])
 def updateTemp():
+
     indoor_temp=getIndoorTemp()
     return jsonify(indoor_temp=indoor_temp)
+    
 if __name__ == "__main__":
     app.run("0.0.0.0", port=80)
