@@ -30,7 +30,6 @@ def my_form():
     f.close()
     weatherString = getWeather()
     indoor_temp = getIndoorTemp()
-    
     #find out what mode the system is in, and set the switch accordingly
     #the switch is in the "cool" position when the checkbox is checked
     if mode == "heat":

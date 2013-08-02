@@ -13,6 +13,7 @@
 {% endwith %}
 </center>
 <div class="switch">
+	<form action="." method="POST">
 	<center>
 	{{ weatherString|safe}}
 	<br>
@@ -29,7 +30,7 @@
 <div class="content">
 	Current indoor temp: 
 	<p id="currentTemp">{{indoor_temp}}&deg</p>
-	<form action="." method="POST">
+	
 	<img src='static/minus-250.png' onclick="decrement(document.getElementsByTagName('input')[1]);" />
 	<input type="text" name="text" value={{ targetTemp }}>
     <img src='static/plus-250.png' onclick="increment(document.getElementsByTagName('input')[1]);" />
