@@ -16,8 +16,8 @@ active_hysteresis = 0.0
 inactive_hysteresis = 0.5
 
 #GPIO pins
-HEATER_PIN = 23
-AC_PIN = 24
+HEATER_PIN = 24
+AC_PIN = 23
 FAN_PIN = 25
 
 #NOTE: thermometer will be read via Dallas 1-wire, as per 
