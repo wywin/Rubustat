@@ -160,9 +160,9 @@ while 1 == 1:
         heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
         coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
         fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
-        log.write("heatStatus = " + heatStatus)
-        log.write("coolStatus = " + coolStatus)
-        log.write("fanStatus = " + fanStatus)
+        log.write("heatStatus = " + str(heatStatus)
+        log.write("coolStatus = " + str(coolStatus))
+        log.write("fanStatus = " + str(fanStatus))
         log.close()
     
     time.sleep(5)
