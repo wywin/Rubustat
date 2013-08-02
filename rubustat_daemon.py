@@ -10,18 +10,17 @@ import RPi.GPIO as GPIO
 
 DEBUG = 1
 
-METRIC=0 # 0 for F, 1 for C
-ZIP=37216
 active_hysteresis = 0.0
 inactive_hysteresis = 0.5
 
-#GPIO pins
+#GPIO pins, reassign these for your hardware configuration!!!
 HEATER_PIN = 24
 AC_PIN = 23
 FAN_PIN = 25
 
-#NOTE: thermometer will be read via Dallas 1-wire, as per 
+#NOTE: thermometer is read via Dallas 1-wire, as per 
 #http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/software
+#<3 to adafruit
 
 #Setting up GPIO
 GPIO.setmode(GPIO.BCM)
@@ -38,15 +37,19 @@ def getHVACState():
     heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
     coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
     fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
+
     if heatStatus == 1 and fanStatus == 1:
         #heating
         return 1
+        
     elif coolStatus == 1 and fanStatus == 1:
         #cooling
         return -1
+
     elif heatStatus == 0 and coolStatus == 0 and fanStatus == 0:
         #idle
         return 0
+
     else:
         #broken
         return 2
@@ -93,54 +96,59 @@ while 1 == 1:
             if indoor_temp < set_temp - inactive_hysteresis:
                 if DEBUG == 1:
                     log = open("DEBUG.log", "a")
-                    log.write("Switching to heat at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.write("Switching to heat at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = heat()
+
         elif hvac_state == 1: #heating
             if indoor_temp > set_temp + active_hysteresis:
                 if DEBUG == 1:
                     log = open("DEBUG.log", "a")
-                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 fan_to_idle()
                 time.sleep(30)
                 if DEBUG == 1:
                     log = open("DEBUG.log", "a")
-                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = idle()
+
         elif hvac_state == -1: # it's cold out, why is the AC running?
                 if DEBUG == 1:
                     log = open("DEBUG.log", "a")
-                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = idle()
+
     # ac mode
     elif mode == "cool":
         if hvac_state == 0: #idle
             if indoor_temp > set_temp + inactive_hysteresis:
                 if DEBUG == 1:
                     log = open("DEBUG.log", "a")
-                    log.write("Switching to cool at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.write("Switching to cool at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = cool()
+
         elif hvac_state == -1: #cooling
             if indoor_temp < set_temp - active_hysteresis:
                 if DEBUG == 1:
                     log = open("DEBUG.log", "a")
-                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 fan_to_idle()
                 time.sleep(30)
                 if DEBUG == 1:
                     log = open("DEBUG.log", "a")
-                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.write("Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = idle()
+
         elif hvac_state == 1: # it's hot out, why is the heater on?
                 if DEBUG == 1:
                     log = open("DEBUG.log", "a")
-                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":")
+                    log.write("Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = idle()
     else:
@@ -148,18 +156,14 @@ while 1 == 1:
 
     #DEBUG stuff
     if DEBUG == 1:
-        print "Sleepy time!"
-        print "hvac_state = " + str(hvac_state)
-        print "indoor_temp = " + str(indoor_temp)
-        print "set_temp = " + str(set_temp)
+        heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
+        coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
+        fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
         log = open("DEBUG.log", "a")
         log.write("Report at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":\n")
         log.write("hvac_state = " + str(hvac_state)+ "\n")
         log.write("indoor_temp = " + str(indoor_temp)+ "\n")
         log.write("set_temp = " + str(set_temp)+ "\n")
-        heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
-        coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
-        fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
         log.write("heatStatus = " + str(heatStatus) + "\n")
         log.write("coolStatus = " + str(coolStatus)+ "\n")
         log.write("fanStatus = " + str(fanStatus)+ "\n")

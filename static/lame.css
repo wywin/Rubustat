@@ -1,7 +1,7 @@
 /* switch thanks to this fancy generator: http://proto.io/freebies/onoff/ */
 li {
     list-style: none;
-    font-size: 50px;
+    font-size: 24px;
 }
 .switch {
 	float:right;
@@ -10,7 +10,12 @@ li {
 .content{
 	float:left;
 }
-input {
+.goButton {
+    font-size: 64pt;
+    width: 200px;
+    text-align: center
+}
+input[type="text"] {
     font-size: 64pt;
     width: 200px;
     text-align: center
@@ -25,7 +30,7 @@ img {
    border:1px solid #ccc;
 }
 
-/*the switch bit*/
+/*the crazy switch bit*/
 
 .onoffswitch {
 position: relative; width: 125px;

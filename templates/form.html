@@ -1,6 +1,31 @@
 <!DOCTYPE html>
-<link rel="stylesheet" type="text/css" href="../static/lame.css">
-<script src="../static/increment.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='lame.css')}}">
+
+<!-- jquery is kinda overkill, but I doubt anyone besides me will actually use this... -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{
+  url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+
+<!-- This will update the current indoor temp as fed from getIndoorTemp.py
+	 Refreshes every 5 seconds -->
+<script>
+function updateTemp() {
+	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	$.getJSON($SCRIPT_ROOT+"/_liveTemp", function(data){
+		$('#indoorTempDiv').html(data["indoor_temp"]);
+	});
+}
+window.onload = updateTemp;
+window.setInterval(function(){
+  updateTemp()
+}, 5000);
+</script>
+
+<!-- Makes them fancy buttons go -->
+<script type=text/javascript src="{{
+  url_for('static', filename='increment.js') }}"></script>
+
 <center>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -12,8 +37,11 @@
   {% endif %}
 {% endwith %}
 </center>
+
+<form action="." method="POST">
+
+<!-- the heating / cooling switch -->
 <div class="switch">
-	<form action="." method="POST">
 	<center>
 	{{ weatherString|safe}}
 	<br>
@@ -26,19 +54,21 @@
 	</div> 
 	</center>	
 </div>
-<center>
 <div class="content">
+	<!-- center tags are basically the extent of my web design knowledge. -->
+	<center>
+	<!-- updated by the updateTemp() js function defined above -->
 	Current indoor temp: 
-	<p id="currentTemp">{{indoor_temp}}&deg</p>
-	<br>
+	<p id="currentTemp"><span id="indoorTempDiv"></span>&deg</p>
 	Current target temp:
+	<br>
 	<p id="targetTemp">{{targetTemp}}&deg</p>
 	<br>
 	<img src='static/minus-250.png' onclick="decrement(document.getElementsByTagName('input')[1]);" />
 	<input type="text" name="text" value={{ targetTemp }}>
     <img src='static/plus-250.png' onclick="increment(document.getElementsByTagName('input')[1]);" />
     <br><br>
-    <input type="submit" style="height: 250px; width: 250px" name="my-form" value="Go!">
+    <input type="submit" style="height: 250px; width: 250px" name="goButton" class="goButton" value="Go!">
     </form>
 </div>
 </center>
