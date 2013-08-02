@@ -18,6 +18,9 @@ input {
 p#currentTemp {
 	font-size: 32pt;
 }
+p#targetTemp {
+    font-size: 24pt;
+}
 img { 
    border:1px solid #ccc;
 }
