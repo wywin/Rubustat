@@ -76,6 +76,7 @@ def idle():
     GPIO.output(HEATER_PIN, False)
     GPIO.output(AC_PIN, False)
     GPIO.output(FAN_PIN, False)
+    time.sleep(360)
     return 0
 
 ###begin main loop###
