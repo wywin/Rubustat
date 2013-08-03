@@ -6,6 +6,7 @@ import os
 import time
 from getIndoorTemp import getIndoorTemp
 import RPi.GPIO as GPIO
+import datetime
 
 
 DEBUG = 1
@@ -32,6 +33,8 @@ os.popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export")
 os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
 
 ###Begin helper functions###
+
+os.popen("mkdir logs")
 
 def getHVACState():
     heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
@@ -96,7 +99,7 @@ while 1 == 1:
         if hvac_state == 0: #idle
             if indoor_temp < set_temp - inactive_hysteresis:
                 if DEBUG == 1:
-                    log = open("DEBUG.log", "a")
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                     log.write("STATE: Switching to heat at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = heat()
@@ -104,20 +107,20 @@ while 1 == 1:
         elif hvac_state == 1: #heating
             if indoor_temp > set_temp + active_hysteresis:
                 if DEBUG == 1:
-                    log = open("DEBUG.log", "a")
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                     log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 fan_to_idle()
                 time.sleep(30)
                 if DEBUG == 1:
-                    log = open("DEBUG.log", "a")
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                     log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = idle()
 
         elif hvac_state == -1: # it's cold out, why is the AC running?
                 if DEBUG == 1:
-                    log = open("DEBUG.log", "a")
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                     log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = idle()
@@ -127,7 +130,7 @@ while 1 == 1:
         if hvac_state == 0: #idle
             if indoor_temp > set_temp + inactive_hysteresis:
                 if DEBUG == 1:
-                    log = open("DEBUG.log", "a")
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                     log.write("STATE: Switching to cool at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = cool()
@@ -135,20 +138,20 @@ while 1 == 1:
         elif hvac_state == -1: #cooling
             if indoor_temp < set_temp - active_hysteresis:
                 if DEBUG == 1:
-                    log = open("DEBUG.log", "a")
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                     log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 fan_to_idle()
                 time.sleep(30)
                 if DEBUG == 1:
-                    log = open("DEBUG.log", "a")
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                     log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = idle()
 
         elif hvac_state == 1: # it's hot out, why is the heater on?
                 if DEBUG == 1:
-                    log = open("DEBUG.log", "a")
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                     log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
                 hvac_state = idle()
@@ -160,7 +163,7 @@ while 1 == 1:
         heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
         coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
         fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
-        log = open("DEBUG.log", "a")
+        log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
         log.write("Report at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":\n")
         log.write("hvac_state = " + str(hvac_state)+ "\n")
         log.write("indoor_temp = " + str(indoor_temp)+ "\n")
