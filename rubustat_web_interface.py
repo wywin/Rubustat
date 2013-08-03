@@ -52,7 +52,7 @@ def my_form():
 @app.route("/", methods=['POST'])
 def my_form_post():
 
-    text = request.form['text']
+    text = request.form['target']
     mode = "heat"
 
     #default mode to heat 
