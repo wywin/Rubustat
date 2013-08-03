@@ -14,7 +14,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 ZIP = 37216
 
 #start the daemon in the background
-#subprocess.Popen("./rubustat_daemon.py", shell=True)
+subprocess.Popen("./rubustat_daemon.py", shell=True)
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
@@ -78,6 +78,6 @@ def updateTemp():
 
     indoor_temp=getIndoorTemp()
     return jsonify(indoor_temp=indoor_temp)
-    
+
 if __name__ == "__main__":
     app.run("0.0.0.0", port=80)
