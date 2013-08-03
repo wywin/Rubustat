@@ -31,18 +31,20 @@ window.setInterval(function(){
 
 		// Android 2.2 needs FastClick to be instantiated before the other listeners so that the stopImmediatePropagation hack can work.
 		FastClick.attach(minus);
+		FastClick.attach(plus);
 
-		plus.addEventListener('touchend', function(event) {
+		
+		/*plus.addEventListener('touchend', function(event) {
 			increment(document.getElementById('target'))
-		}, false);
+		}, false);*/
 
 		plus.addEventListener('click', function(event) {
 			increment(document.getElementById('target'))
 		}, false);
 
-		minus.addEventListener('touchend', function(event) {
+		/*minus.addEventListener('touchend', function(event) {
 			decrement(document.getElementById('target'))
-		}, false);
+		}, false);*/
 
 		minus.addEventListener('click', function(event) {
 			decrement(document.getElementById('target'))
