@@ -1,14 +1,68 @@
 /* switch thanks to this fancy generator: http://proto.io/freebies/onoff/ */
+/* <!-- */
+body {
+    margin:0;
+    padding:0;
+}
+#header h1,
+#header h2,
+#header p {
+    margin-left:2%;
+    padding-right:2%;
+}
+#active2 #tab2,
+#active3 #tab3,
+#active4 #tab4,
+#active5 #tab5 {
+    font-weight:bold;
+    text-decoration:none;
+    color:#000;
+}
+#footer {
+    clear:both;
+    float:left;
+    width:100%;
+}
+#footer p {
+    margin-left:2%;
+    padding-right:2%;
+}
+
+/* Start of Column CSS */
+#container2 {
+    clear:left;
+    float:left;
+    width:100%;
+    overflow:hidden;
+}
+#container1 {
+    float:left;
+    width:100%;
+    position:relative;
+    right:50%;
+}
+#col1 {
+    float:left;
+    width:46%;
+    position:relative;
+    left:52%;
+    overflow:hidden;
+}
+#col2 {
+    float:left;
+    width:46%;
+    position:relative;
+    left:56%;
+    overflow:hidden;
+}
+/* --> */
+
+.plus { margin: 0.5em auto; width: 4em; line-height: 4em; border: 1px solid black; font-size: 4em; text-align: center; }
+.minus { margin: 0.5em auto; width: 4em; line-height: 4em; border: 1px solid black; font-size: 4em; text-align: center; }
+
 li {
     list-style: none;
     font-size: 24px;
-}
-.switch {
-	float:right;
-	width:500px;
-}
-.content{
-	float:left;
 }
 .goButton {
     font-size: 64pt;
@@ -16,18 +70,15 @@ li {
     text-align: center
 }
 input[type="text"] {
-    font-size: 64pt;
-    width: 200px;
+    font-size: 32pt;
+    width: 100px;
     text-align: center
 }
 p#currentTemp {
-	font-size: 32pt;
+	font-size: 24pt;
 }
 p#targetTemp {
-    font-size: 24pt;
-}
-img { 
-   border:1px solid #ccc;
+    font-size: 16pt;
 }
 
 /*the crazy switch bit*/

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='lame.css')}}">
-
+<script type='application/javascript' src="{{url_for('static',filename='fastclick.js')}}"></script>
 <!-- jquery is kinda overkill, but I doubt anyone besides me will actually use this... -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="{{
@@ -16,16 +16,44 @@ function updateTemp() {
 		$('#indoorTempDiv').html(data["indoor_temp"]);
 	});
 }
+
 window.onload = updateTemp;
 window.setInterval(function(){
   updateTemp()
 }, 5000);
 </script>
+<script type="application/javascript">
+	window.addEventListener('load', function() {
+		var plus, minus;
+
+		plus = document.getElementById('plus');
+		minus = document.getElementById('minus');
+
+		// Android 2.2 needs FastClick to be instantiated before the other listeners so that the stopImmediatePropagation hack can work.
+		FastClick.attach(minus);
+
+		plus.addEventListener('touchend', function(event) {
+			increment(document.getElementById('target'))
+		}, false);
+
+		plus.addEventListener('click', function(event) {
+			increment(document.getElementById('target'))
+		}, false);
+
+		minus.addEventListener('touchend', function(event) {
+			decrement(document.getElementById('target'))
+		}, false);
+
+		minus.addEventListener('click', function(event) {
+			decrement(document.getElementById('target'))
+		}, false);
+	}, false);
+</script>
 
 <!-- Makes them fancy buttons go -->
 <script type=text/javascript src="{{
   url_for('static', filename='increment.js') }}"></script>
-
+<div id="header">
 <center>
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -37,37 +65,45 @@ window.setInterval(function(){
   {% endif %}
 {% endwith %}
 </center>
+<div id="container2">
+	<form action="." method="POST">
+	<div id="container1">
+		<div id="col1">
+			<center>
+			<br><br>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" {{ checked }}>
+				<label class="onoffswitch-label" for="myonoffswitch">
+						<div class="onoffswitch-inner"></div>
+						<div class="onoffswitch-switch"></div>
+				</label>
+			</div> 
+			<div class="plus" id="plus">+</div>
+			<input type="text" id="target" value={{ targetTemp }}>
+			<div class="minus" id="minus">-</div>
+		    </center>
+		</div>
 
-<form action="." method="POST">
-
-<!-- the heating / cooling switch -->
-<div class="switch">
-	<center>
-	{{ weatherString|safe}}
-	<br>
-	<div class="onoffswitch">
-	<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" {{ checked }}>
-	<label class="onoffswitch-label" for="myonoffswitch">
-			<div class="onoffswitch-inner"></div>
-			<div class="onoffswitch-switch"></div>
-	</label>
-	</div> 
-	</center>	
-</div>
-<div class="content">
-	<!-- center tags are basically the extent of my web design knowledge. -->
-	<!-- updated by the updateTemp() js function defined above -->
-	Current indoor temp: 
-	<p id="currentTemp"><span id="indoorTempDiv"></span>&deg</p>
-	Current target temp:
-	<br>
-	<p id="targetTemp">{{targetTemp}}&deg</p>
-	<br>
-	<img src='static/minus-250.png' onclick="decrement(document.getElementsByTagName('input')[1]);" />
-	<input type="text" name="text" value={{ targetTemp }}>
-    <img src='static/plus-250.png' onclick="increment(document.getElementsByTagName('input')[1]);" />
-    <br><br>
-    <input type="submit" style="height: 250px; width: 250px" name="goButton" class="goButton" value="Go!">
-    </form>
-</div>
+		<div id="col2">
+			<center>
+			<!-- the heating / cooling switch -->
+			<div class="switch">
+				<center>
+				{{ weatherString|safe}}
+				<br>
+				<center>
+				<!-- center tags are basically the extent of my web design knowledge. -->
+				<!-- updated by the updateTemp() js function defined above -->
+				Current indoor temp: 
+				<p id="currentTemp"><span id="indoorTempDiv"></span>&deg</p>
+				Current target temp:
+				<br>
+				<p id="targetTemp">{{targetTemp}}&deg</p>
+				
+				<br><br>
+				<input type="submit" style="height: 150px; width: 150px" id="goButton" class="goButton" value="Go!">
+				</center>
+			</div>
+			</center>
+	</form>
 </html>
