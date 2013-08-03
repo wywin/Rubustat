@@ -33,18 +33,9 @@ window.setInterval(function(){
 		FastClick.attach(minus);
 		FastClick.attach(plus);
 
-		
-		/*plus.addEventListener('touchend', function(event) {
-			increment(document.getElementById('target'))
-		}, false);*/
-
 		plus.addEventListener('click', function(event) {
 			increment(document.getElementById('target'))
 		}, false);
-
-		/*minus.addEventListener('touchend', function(event) {
-			decrement(document.getElementById('target'))
-		}, false);*/
 
 		minus.addEventListener('click', function(event) {
 			decrement(document.getElementById('target'))
