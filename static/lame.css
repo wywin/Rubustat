@@ -57,8 +57,8 @@ body {
 }
 /* --> */
 
-.plus { margin: 0.5em auto; width: 4em; line-height: 4em; border: 1px solid black; font-size: 4em; text-align: center; }
-.minus { margin: 0.5em auto; width: 4em; line-height: 4em; border: 1px solid black; font-size: 4em; text-align: center; }
+.plus { margin: 0.5em auto; width: 4em; line-height: 4em; border: 20px solid black; font-size: 4em; text-align: center; }
+.minus { margin: 0.5em auto; width: 4em; line-height: 4em; border: 20px solid black; font-size: 4em; text-align: center; }
 
 li {
     list-style: none;
@@ -70,15 +70,15 @@ li {
     text-align: center
 }
 input[type="text"] {
-    font-size: 32pt;
-    width: 100px;
+    font-size: 64pt;
+    width: 200px;
     text-align: center
 }
 p#currentTemp {
-	font-size: 24pt;
+    font-size: 64pt;
 }
 p#targetTemp {
-    font-size: 16pt;
+    font-size: 64pt;
 }
 
 /*the crazy switch bit*/
