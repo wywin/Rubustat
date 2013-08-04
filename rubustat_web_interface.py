@@ -34,6 +34,7 @@ def my_form():
     f.close()
     weatherString = getWeather()
     indoor_temp = getIndoorTemp()
+    rounded_indoor_temp = round(indoor_temp,1)
 
     #find out what mode the system is in, and set the switch accordingly
     #the switch is in the "cool" position when the checkbox is checked
@@ -47,7 +48,7 @@ def my_form():
     return render_template("form.html", targetTemp = targetTemp, \
                                         weatherString = weatherString, \
                                         checked = checked, \
-                                        indoor_temp = indoor_temp)
+                                        indoor_temp = rounded_indoor_temp)
 
 @app.route("/", methods=['POST'])
 def my_form_post():
