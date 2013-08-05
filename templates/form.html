@@ -13,7 +13,7 @@
 function updateTemp() {
 	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 	$.getJSON($SCRIPT_ROOT+"/_liveTemp", function(data){
-		$('#indoorTempDiv').html(data["indoor_temp"]);
+		$('#indoorTempDiv').html(data["rounded_indoor_temp"]);
 	});
 }
 

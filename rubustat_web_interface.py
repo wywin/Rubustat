@@ -77,7 +77,7 @@ def updateTemp():
 
     indoor_temp=getIndoorTemp()
     rounded_indoor_temp = round(indoor_temp,1)
-    return jsonify(indoor_temp=rounded_indoor_temp)
+    return jsonify(rounded_indoor_temp=rounded_indoor_temp)
 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=80)
