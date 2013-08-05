@@ -7,6 +7,7 @@ import time
 from getIndoorTemp import getIndoorTemp
 import RPi.GPIO as GPIO
 import datetime
+import sqlite3
 
 
 DEBUG = 1
