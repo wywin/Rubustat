@@ -106,7 +106,7 @@ while 1 == 1:
 
     now = datetime.datetime.now()
     logElapsed = now - lastLog
-    if logElapsed > timedelta(minutes=6):
+    if logElapsed > datetime.timedelta(minutes=6):
         c.execute('INSERT INTO logging VALUES(?, ?, ?)', (now, indoor_temp, set_temp))
         conn.commit()
      
