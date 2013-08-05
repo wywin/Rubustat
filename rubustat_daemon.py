@@ -91,7 +91,7 @@ def idle():
     return 0
 
 init()
-lastLog = datetime.now()
+lastLog = datetime.datetime.now()
 ###begin main loop###
 #infinite loop is the same as a daemon, right?
 while 1 == 1:
@@ -104,7 +104,7 @@ while 1 == 1:
     mode = file.readline()
     file.close()
 
-    now = datetime.now()
+    now = datetime.datetime.now()
     logElapsed = now - lastLog
     if logElapsed > timedelta(minutes=6):
         c.execute('INSERT INTO logging VALUES(?, ?, ?)', (now, indoor_temp, set_temp))
