@@ -109,7 +109,7 @@ while 1 == 1:
     if logElapsed > datetime.timedelta(minutes=6):
         c.execute('INSERT INTO logging VALUES(?, ?, ?)', (now, indoor_temp, set_temp))
         conn.commit()
-     
+        lastLog = datetime.datetime.now()
     # heater mode
     if mode == "heat":
         if hvac_state == 0: #idle
