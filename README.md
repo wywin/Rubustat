@@ -12,7 +12,7 @@ Dependencies:
 * pywapi for weather info (sudo pip install pywapi)
 * RPi.GPIO (you probably already have it installed on your Pi)
 * Flask (sudo apt-get install python-flask on Ubuntu, Debian, and likely other apt based distros)
-
+* sqlite (sudo apt-get install python-sqlite sqlite3)
 Our files:
 
 * static/: simple javascripts, and a smattering of css.
