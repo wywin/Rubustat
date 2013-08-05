@@ -23,18 +23,25 @@ FAN_PIN = 25
 #http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/software
 #<3 to adafruit
 
-#Setting up GPIO
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(HEATER_PIN, GPIO.OUT)
-GPIO.setup(AC_PIN, GPIO.OUT)
-GPIO.setup(FAN_PIN, GPIO.OUT)
-os.popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export")
-os.popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export")
-os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
+
+def init():
+    #Setting up GPIO
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(HEATER_PIN, GPIO.OUT)
+    GPIO.setup(AC_PIN, GPIO.OUT)
+    GPIO.setup(FAN_PIN, GPIO.OUT)
+    os.popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export")
+    os.popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export")
+    os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
+    #Setting up logs
+    os.popen("mkdir logs")
+    conn = sqlite3.connect("tempLogs.db")
+    c = conn.cursor()
+    c.execute('CREATE TABLE IF NOT EXISTS logging (datetime TIMESTAMP, actualTemp FLOAT, targetTemp INT)')
 
 ###Begin helper functions###
 
-os.popen("mkdir logs")
+
 
 def getHVACState():
     heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
@@ -82,6 +89,8 @@ def idle():
     time.sleep(360)
     return 0
 
+init()
+lastLog = datetime.now()
 ###begin main loop###
 #infinite loop is the same as a daemon, right?
 while 1 == 1:
@@ -93,6 +102,12 @@ while 1 == 1:
     set_temp = float(file.readline())
     mode = file.readline()
     file.close()
+
+    now = datetime.now()
+    logElapsed = now - lastLog
+    if logElapsed > timedelta(minutes=6):
+        c.execute('INSERT INTO logging VALUES(?, ?, ?)', (now, indoor_temp, set_temp))
+        conn.commit()
      
     # heater mode
     if mode == "heat":
