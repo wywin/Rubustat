@@ -32,7 +32,10 @@ def my_form():
     targetTemp = f.readline().strip()
     mode = f.readline()
     f.close()
-    weatherString = getWeather()
+    try:
+        weatherString = getWeather()
+    except:
+    weatherString = "Couldn't get remote weather!"
     
 
     #find out what mode the system is in, and set the switch accordingly
