@@ -15,8 +15,8 @@ from getIndoorTemp import getIndoorTemp
 
 
 
-class Daemon):
-    
+class rubustatDaemon(Daemon):
+
     def getHVACState():
         heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
         coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
@@ -165,7 +165,7 @@ class Daemon):
 
 
 if __name__ == "__main__":
-        daemon = '/tmp/pid')
+        daemon = '/tmp/rubustatDaemon.pid')
 
         DEBUG = 1
 
