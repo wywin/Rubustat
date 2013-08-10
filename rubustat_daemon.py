@@ -22,7 +22,14 @@ HEATER_PIN = 24
 AC_PIN = 23
 FAN_PIN = 25
 
-
+ #Setting up GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(HEATER_PIN, GPIO.OUT)
+GPIO.setup(AC_PIN, GPIO.OUT)
+GPIO.setup(FAN_PIN, GPIO.OUT)
+os.popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export")
+os.popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export")
+os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
 
 class rubustatDaemon(Daemon):
 
@@ -185,14 +192,7 @@ if __name__ == "__main__":
         #than running the exports and making directories every time
         #but it works for now...
 
-        #Setting up GPIO
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(HEATER_PIN, GPIO.OUT)
-        GPIO.setup(AC_PIN, GPIO.OUT)
-        GPIO.setup(FAN_PIN, GPIO.OUT)
-        os.popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export")
-        os.popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export")
-        os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
+       
         #Setting up logs
         os.popen("mkdir /home/pi/src/Rubustat/logs")
 
