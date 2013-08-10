@@ -178,6 +178,11 @@ if __name__ == "__main__":
         #http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/software
         #<3 to adafruit
 
+
+        #There is probably a better way to set this up,
+        #than running the exports and making directories every time
+        #but it works for now...
+
         #Setting up GPIO
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(HEATER_PIN, GPIO.OUT)
@@ -188,6 +193,7 @@ if __name__ == "__main__":
         os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
         #Setting up logs
         os.popen("mkdir /home/pi/src/Rubustat/logs")
+
         conn = sqlite3.connect("/home/pi/src/Rubustat/tempLogs.db")
         c = conn.cursor()
         c.execute('CREATE TABLE IF NOT EXISTS logging (datetime TIMESTAMP, actualTemp FLOAT, targetTemp INT)')    
