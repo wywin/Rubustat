@@ -13,7 +13,11 @@ from getIndoorTemp import getIndoorTemp
 
 ###Begin helper functions###
 
-def getHVACState():
+
+
+class rubustatDaemon(Daemon):
+    
+    def getHVACState():
     heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
     coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
     fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
@@ -34,33 +38,32 @@ def getHVACState():
         #broken
         return 2
 
-def cool():
-    GPIO.output(HEATER_PIN, False)
-    GPIO.output(AC_PIN, True)
-    GPIO.output(FAN_PIN, True)
-    return -1
+    def cool():
+        GPIO.output(HEATER_PIN, False)
+        GPIO.output(AC_PIN, True)
+        GPIO.output(FAN_PIN, True)
+        return -1
 
-def heat():
-    GPIO.output(HEATER_PIN, True)
-    GPIO.output(AC_PIN, False)
-    GPIO.output(FAN_PIN, True)
-    return 1
+    def heat():
+        GPIO.output(HEATER_PIN, True)
+        GPIO.output(AC_PIN, False)
+        GPIO.output(FAN_PIN, True)
+        return 1
 
-def fan_to_idle(): 
-    #to blow the rest of the heated / cooled air out of the system
-    GPIO.output(HEATER_PIN, False)
-    GPIO.output(AC_PIN, False)
-    GPIO.output(FAN_PIN, True)
+    def fan_to_idle(): 
+        #to blow the rest of the heated / cooled air out of the system
+        GPIO.output(HEATER_PIN, False)
+        GPIO.output(AC_PIN, False)
+        GPIO.output(FAN_PIN, True)
 
-def idle():
-    GPIO.output(HEATER_PIN, False)
-    GPIO.output(AC_PIN, False)
-    GPIO.output(FAN_PIN, False)
-    #delay to preserve processor
-    time.sleep(360)
-    return 0
+    def idle():
+        GPIO.output(HEATER_PIN, False)
+        GPIO.output(AC_PIN, False)
+        GPIO.output(FAN_PIN, False)
+        #delay to preserve processor
+        time.sleep(360)
+        return 0
 
-class rubustatDaemon(Daemon):
     def run(self):
         lastLog = datetime.datetime.now()
         while True:
@@ -84,7 +87,7 @@ class rubustatDaemon(Daemon):
                 if hvac_state == 0: #idle
                     if indoor_temp < set_temp - inactive_hysteresis:
                         if DEBUG == 1:
-                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to heat at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         hvac_state = heat()
