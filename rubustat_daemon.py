@@ -69,7 +69,7 @@ class rubustatDaemon(Daemon):
         while True:
 
             indoor_temp = float(getIndoorTemp())
-            hvac_state = int(getHVACState())
+            hvac_state = int(self.getHVACState())
 
             file = open("/home/pi/src/Rubustat/status", "r")
             set_temp = float(file.readline())
@@ -90,7 +90,7 @@ class rubustatDaemon(Daemon):
                             log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to heat at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
-                        hvac_state = heat()
+                        hvac_state = self.heat()
 
                 elif hvac_state == 1: #heating
                     if indoor_temp > set_temp + active_hysteresis:
@@ -98,7 +98,7 @@ class rubustatDaemon(Daemon):
                             log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
-                        fan_to_idle()
+                        self.fan_to_idle()
                         time.sleep(30)
                         if DEBUG == 1:
                             log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
@@ -111,7 +111,7 @@ class rubustatDaemon(Daemon):
                             log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
-                        hvac_state = idle()
+                        hvac_state = self.idle()
 
             # ac mode
             elif mode == "cool":
@@ -121,7 +121,7 @@ class rubustatDaemon(Daemon):
                             log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to cool at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
-                        hvac_state = cool()
+                        hvac_state = self.cool()
 
                 elif hvac_state == -1: #cooling
                     if indoor_temp < set_temp - active_hysteresis:
@@ -129,20 +129,20 @@ class rubustatDaemon(Daemon):
                             log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
-                        fan_to_idle()
+                        self.fan_to_idle()
                         time.sleep(30)
                         if DEBUG == 1:
                             log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
-                        hvac_state = idle()
+                        hvac_state = self.idle()
 
                 elif hvac_state == 1: # it's hot out, why is the heater on?
                         if DEBUG == 1:
                             log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
-                        hvac_state = idle()
+                        hvac_state = self.idle()
             else:
                 print "It broke."
 
