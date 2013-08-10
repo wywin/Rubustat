@@ -11,7 +11,16 @@ import sqlite3
 from daemon import Daemon
 from getIndoorTemp import getIndoorTemp
 
-###Begin helper functions###
+
+DEBUG = 1
+
+active_hysteresis = 0.0
+inactive_hysteresis = 0.5
+
+#GPIO pins, reassign these for your hardware configuration!!!
+HEATER_PIN = 24
+AC_PIN = 23
+FAN_PIN = 25
 
 
 
@@ -166,16 +175,6 @@ class rubustatDaemon(Daemon):
 
 if __name__ == "__main__":
         daemon = rubustatDaemon('/tmp/rubustatDaemon.pid')
-
-        DEBUG = 1
-
-        active_hysteresis = 0.0
-        inactive_hysteresis = 0.5
-
-        #GPIO pins, reassign these for your hardware configuration!!!
-        HEATER_PIN = 24
-        AC_PIN = 23
-        FAN_PIN = 25
 
         #NOTE: thermometer is read via Dallas 1-wire, as per 
         #http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/software
