@@ -69,7 +69,7 @@ class rubustatDaemon(Daemon):
         while True:
 
             indoor_temp = float(getIndoorTemp())
-            hvac_state = int(getHVACState())
+            hvac_state = int(rubustatDaemon.getHVACState())
 
             file = open("/home/pi/src/Rubustat/status", "r")
             set_temp = float(file.readline())
