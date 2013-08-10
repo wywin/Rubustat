@@ -148,7 +148,7 @@ class rubustatDaemon(Daemon):
                 heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
                 coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
                 fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
-                log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                 log.write("Report at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":\n")
                 log.write("hvac_state = " + str(hvac_state)+ "\n")
                 log.write("indoor_temp = " + str(indoor_temp)+ "\n")
