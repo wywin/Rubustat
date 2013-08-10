@@ -11,7 +11,6 @@ import sqlite3
 from daemon import Daemon
 from getIndoorTemp import getIndoorTemp
 
-
 DEBUG = 1
 
 active_hysteresis = 0.0
@@ -22,16 +21,16 @@ HEATER_PIN = 24
 AC_PIN = 23
 FAN_PIN = 25
 
- #Setting up GPIO
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(HEATER_PIN, GPIO.OUT)
-GPIO.setup(AC_PIN, GPIO.OUT)
-GPIO.setup(FAN_PIN, GPIO.OUT)
-os.popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export")
-os.popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export")
-os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
-
 class rubustatDaemon(Daemon):
+
+    def configureGPIO(self):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(HEATER_PIN, GPIO.OUT)
+        GPIO.setup(AC_PIN, GPIO.OUT)
+        GPIO.setup(FAN_PIN, GPIO.OUT)
+        os.popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export")
+        os.popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export")
+        os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
 
     def getHVACState(self):
         heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
@@ -76,12 +75,13 @@ class rubustatDaemon(Daemon):
         GPIO.output(HEATER_PIN, False)
         GPIO.output(AC_PIN, False)
         GPIO.output(FAN_PIN, False)
-        #delay to preserve processor
+        #delay to preserve compressor
         time.sleep(360)
         return 0
 
     def run(self):
         lastLog = datetime.datetime.now()
+        self.configureGPIO()
         while True:
 
             indoor_temp = float(getIndoorTemp())
@@ -182,17 +182,7 @@ class rubustatDaemon(Daemon):
 
 if __name__ == "__main__":
         daemon = rubustatDaemon('/tmp/rubustatDaemon.pid')
-
-        #NOTE: thermometer is read via Dallas 1-wire, as per 
-        #http://learn.adafruit.com/adafruits-raspberry-pi-lesson-11-ds18b20-temperature-sensing/software
-        #<3 to adafruit
-
-
-        #There is probably a better way to set this up,
-        #than running the exports and making directories every time
-        #but it works for now...
-
-       
+      
         #Setting up logs
         os.popen("mkdir /home/pi/src/Rubustat/logs")
 
@@ -204,6 +194,14 @@ if __name__ == "__main__":
                 if 'start' == sys.argv[1]:
                         daemon.start()
                 elif 'stop' == sys.argv[1]:
+                        #stop all HVAC activity when daemon stops
+                        GPIO.setmode(GPIO.BCM)
+                        GPIO.setup(HEATER_PIN, GPIO.OUT)
+                        GPIO.setup(AC_PIN, GPIO.OUT)
+                        GPIO.setup(FAN_PIN, GPIO.OUT)
+                        GPIO.output(HEATER_PIN, False)
+                        GPIO.output(AC_PIN, False)
+                        GPIO.output(FAN_PIN, False)
                         daemon.stop()
                 elif 'restart' == sys.argv[1]:
                         daemon.restart()
