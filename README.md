@@ -30,3 +30,5 @@ https://github.com/ftlabs/fastclick
 http://proto.io/freebies/onoff/
 
 http://blog.jacobean.net/?p=678
+
+http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
