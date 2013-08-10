@@ -18,25 +18,25 @@ from getIndoorTemp import getIndoorTemp
 class rubustatDaemon(Daemon):
     
     def getHVACState():
-    heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
-    coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
-    fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
+        heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
+        coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
+        fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
 
-    if heatStatus == 1 and fanStatus == 1:
-        #heating
-        return 1
-        
-    elif coolStatus == 1 and fanStatus == 1:
-        #cooling
-        return -1
+        if heatStatus == 1 and fanStatus == 1:
+            #heating
+            return 1
+            
+        elif coolStatus == 1 and fanStatus == 1:
+            #cooling
+            return -1
 
-    elif heatStatus == 0 and coolStatus == 0 and fanStatus == 0:
-        #idle
-        return 0
+        elif heatStatus == 0 and coolStatus == 0 and fanStatus == 0:
+            #idle
+            return 0
 
-    else:
-        #broken
-        return 2
+        else:
+            #broken
+            return 2
 
     def cool():
         GPIO.output(HEATER_PIN, False)
