@@ -165,7 +165,7 @@ class rubustatDaemon(Daemon):
 
 
 if __name__ == "__main__":
-        daemon = '/tmp/rubustatDaemon.pid')
+        daemon = '/tmp/rubustatDaemon.pid'
 
         DEBUG = 1
 
