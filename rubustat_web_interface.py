@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import pywapi
-import subprocess
+import os
 import re
 from getIndoorTemp import getIndoorTemp
 
@@ -14,7 +14,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 ZIP = 37216
 
 #start the daemon in the background
-os.popen("/usr/bin/python rubustat_daemon.py start", shell=True)
+os.popen("/usr/bin/python rubustat_daemon.py start")
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
