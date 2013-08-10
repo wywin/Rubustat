@@ -35,7 +35,7 @@ def my_form():
     try:
         weatherString = getWeather()
     except:
-    weatherString = "Couldn't get remote weather!"
+        weatherString = "Couldn't get remote weather!"
     
 
     #find out what mode the system is in, and set the switch accordingly
