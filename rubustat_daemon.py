@@ -17,7 +17,7 @@ from getIndoorTemp import getIndoorTemp
 
 class rubustatDaemon(Daemon):
 
-    def getHVACState():
+    def getHVACState(self):
         heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
         coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
         fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
@@ -38,25 +38,25 @@ class rubustatDaemon(Daemon):
             #broken
             return 2
 
-    def cool():
+    def cool(self):
         GPIO.output(HEATER_PIN, False)
         GPIO.output(AC_PIN, True)
         GPIO.output(FAN_PIN, True)
         return -1
 
-    def heat():
+    def heat(self):
         GPIO.output(HEATER_PIN, True)
         GPIO.output(AC_PIN, False)
         GPIO.output(FAN_PIN, True)
         return 1
 
-    def fan_to_idle(): 
+    def fan_to_idle(self): 
         #to blow the rest of the heated / cooled air out of the system
         GPIO.output(HEATER_PIN, False)
         GPIO.output(AC_PIN, False)
         GPIO.output(FAN_PIN, True)
 
-    def idle():
+    def idle(self):
         GPIO.output(HEATER_PIN, False)
         GPIO.output(AC_PIN, False)
         GPIO.output(FAN_PIN, False)
