@@ -28,7 +28,7 @@ def getWeather():
 
 @app.route('/')
 def my_form():
-    f = open("status", "r")
+    f = open("/home/pi/src/Rubustat/status", "r")
     targetTemp = f.readline().strip()
     mode = f.readline()
     f.close()
@@ -67,7 +67,7 @@ def my_form_post():
     newTargetTemp = text.upper()
     match = re.search(r'^\d{2}$',newTargetTemp)
     if match:
-        f = open("status", "w")
+        f = open("/home/pi/src/Rubustat/status", "w")
         f.write(newTargetTemp + "\n" + mode)
         f.close()
         flash("New temperature of " + newTargetTemp + " set!")
