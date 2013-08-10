@@ -14,7 +14,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 ZIP = 37216
 
 #start the daemon in the background
-os.popen("/usr/bin/python rubustat_daemon.py start")
+os.popen("/usr/bin/python /home/pi/src/Rubustat/rubustat_daemon.py start")
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
