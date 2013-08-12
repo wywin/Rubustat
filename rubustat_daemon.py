@@ -7,19 +7,26 @@ import time
 import RPi.GPIO as GPIO
 import datetime
 import sqlite3
+import ConfigParser
 
 from daemon import Daemon
 from getIndoorTemp import getIndoorTemp
 
-DEBUG = 1
+#set working directory to where "rubustat_daemon.py" is
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
-active_hysteresis = 0.0
-inactive_hysteresis = 0.5
+config = ConfigParser.ConfigParser()
+config.read("config.txt")
+DEBUG = int(config.get('main','DEBUG'))
+active_hysteresis = float(config.get('main','active_hysteresis'))
+inactive_hysteresis = float(config.get('main','inactive_hysteresis'))
+HEATER_PIN = int(config.get('main','HEATER_PIN'))
+AC_PIN = int(config.get('main','AC_PIN'))
+FAN_PIN = int(config.get('main','FAN_PIN'))
 
-#GPIO pins, reassign these for your hardware configuration!!!
-HEATER_PIN = 24
-AC_PIN = 23
-FAN_PIN = 25
+
 
 class rubustatDaemon(Daemon):
 
@@ -87,7 +94,11 @@ class rubustatDaemon(Daemon):
             indoor_temp = float(getIndoorTemp())
             hvac_state = int(self.getHVACState())
 
-            file = open("/home/pi/src/Rubustat/status", "r")
+            abspath = os.path.abspath(__file__)
+            dname = os.path.dirname(abspath)
+            os.chdir(dname)
+
+            file = open("status", "r")
             set_temp = float(file.readline())
             mode = file.readline()
             file.close()
@@ -103,7 +114,7 @@ class rubustatDaemon(Daemon):
                 if hvac_state == 0: #idle
                     if indoor_temp < set_temp - inactive_hysteresis:
                         if DEBUG == 1:
-                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to heat at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         hvac_state = self.heat()
@@ -111,20 +122,20 @@ class rubustatDaemon(Daemon):
                 elif hvac_state == 1: #heating
                     if indoor_temp > set_temp + active_hysteresis:
                         if DEBUG == 1:
-                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         self.fan_to_idle()
                         time.sleep(30)
                         if DEBUG == 1:
-                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         hvac_state = idle()
 
                 elif hvac_state == -1: # it's cold out, why is the AC running?
                         if DEBUG == 1:
-                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         hvac_state = self.idle()
@@ -134,7 +145,7 @@ class rubustatDaemon(Daemon):
                 if hvac_state == 0: #idle
                     if indoor_temp > set_temp + inactive_hysteresis:
                         if DEBUG == 1:
-                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to cool at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         hvac_state = self.cool()
@@ -142,20 +153,20 @@ class rubustatDaemon(Daemon):
                 elif hvac_state == -1: #cooling
                     if indoor_temp < set_temp - active_hysteresis:
                         if DEBUG == 1:
-                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         self.fan_to_idle()
                         time.sleep(30)
                         if DEBUG == 1:
-                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         hvac_state = self.idle()
 
                 elif hvac_state == 1: # it's hot out, why is the heater on?
                         if DEBUG == 1:
-                            log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                            log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to fan_to_idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
                         hvac_state = self.idle()
@@ -167,7 +178,7 @@ class rubustatDaemon(Daemon):
                 heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
                 coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
                 fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
-                log = open("/home/pi/src/Rubustat/logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                 log.write("Report at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":\n")
                 log.write("hvac_state = " + str(hvac_state)+ "\n")
                 log.write("indoor_temp = " + str(indoor_temp)+ "\n")
@@ -181,12 +192,12 @@ class rubustatDaemon(Daemon):
 
 
 if __name__ == "__main__":
-        daemon = rubustatDaemon('/tmp/rubustatDaemon.pid')
+        daemon = rubustatDaemon('rubustatDaemon.pid')
       
         #Setting up logs
-        os.popen("mkdir /home/pi/src/Rubustat/logs")
+        os.popen("mkdir logs")
 
-        conn = sqlite3.connect("/home/pi/src/Rubustat/tempLogs.db")
+        conn = sqlite3.connect("tempLogs.db")
         c = conn.cursor()
         c.execute('CREATE TABLE IF NOT EXISTS logging (datetime TIMESTAMP, actualTemp FLOAT, targetTemp INT)')    
 
