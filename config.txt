@@ -1,0 +1,8 @@
+[main]
+DEBUG = 1
+active_hysteresis = 0.0
+inactive_hysteresis = 0.5
+HEATER_PIN = 24
+AC_PIN = 23
+FAN_PIN = 25
+ZIP = 37216
