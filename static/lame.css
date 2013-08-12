@@ -80,7 +80,16 @@ p#currentTemp {
 p#targetTemp {
     font-size: 64pt;
 }
-
+p#daemonRunning{
+    font-size: 16pt;
+    color:#1BB300;
+    font-weight:bold;
+}
+p#daemonNotRunning{
+    font-size: 64pt;
+    color:#FF0000;
+    font-weight:1500;
+}
 /*the crazy switch bit*/
 
 .onoffswitch {
