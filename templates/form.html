@@ -22,6 +22,7 @@ window.setInterval(function(){
   updateTemp()
 }, 5000);
 </script>
+
 <script type="application/javascript">
 	window.addEventListener('load', function() {
 		var plus, minus;
@@ -74,6 +75,8 @@ window.setInterval(function(){
 			<div class="plus" id="plus">+</div>
 			<input type="text" id="target" name="target" value={{ targetTemp }}>
 			<div class="minus" id="minus">-</div>
+			<br><br>
+			{{daemonStatus|safe}}
 		    </center>
 		</div>
 
