@@ -2,6 +2,8 @@
 import pywapi
 import os
 import re
+import ConfigParser
+
 from getIndoorTemp import getIndoorTemp
 
 from flask import Flask, request, session, g, redirect, url_for, \
@@ -11,10 +13,17 @@ app = Flask(__name__)
 #hard to be secret in open source... >.>
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
-ZIP = 37216
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
+config = ConfigParser.ConfigParser()
+config.read("config.txt")
+ZIP = config.get('main','ZIP')
 
 #start the daemon in the background
-os.popen("/usr/bin/python /home/pi/src/Rubustat/rubustat_daemon.py start")
+print "pwd= " + str(os.getcwd())
+os.popen("/usr/bin/python rubustat_daemon.py start")
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
@@ -28,7 +37,7 @@ def getWeather():
 
 @app.route('/')
 def my_form():
-    f = open("/home/pi/src/Rubustat/status", "r")
+    f = open("status", "r")
     targetTemp = f.readline().strip()
     mode = f.readline()
     f.close()
@@ -67,7 +76,7 @@ def my_form_post():
     newTargetTemp = text.upper()
     match = re.search(r'^\d{2}$',newTargetTemp)
     if match:
-        f = open("/home/pi/src/Rubustat/status", "w")
+        f = open("status", "w")
         f.write(newTargetTemp + "\n" + mode)
         f.close()
         flash("New temperature of " + newTargetTemp + " set!")
