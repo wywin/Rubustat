@@ -22,7 +22,6 @@ config.read("config.txt")
 ZIP = config.get('main','ZIP')
 
 #start the daemon in the background
-print "pwd= " + str(os.getcwd())
 os.popen("/usr/bin/python rubustat_daemon.py start")
 
 def getWeather():
@@ -44,12 +43,18 @@ def my_form():
     try:
         weatherString = getWeather()
     except:
-        weatherString = "Couldn't get remote weather!"
-
-    
+        weatherString = "Couldn't get remote weather info!"
 
     #find out what mode the system is in, and set the switch accordingly
     #the switch is in the "cool" position when the checkbox is checked
+
+    pid = os.system("cat *.pid")
+    try:
+        os.kill(pid, 0)
+        daemonStatus="<p id=\"daemonRunning\"> Daemon is running. </p>"
+    except OSError:
+        daemonStatus="<p id=\"daemonNotRunning\"> DAEMON IS NOT RUNNING. </p>"
+
 
     if mode == "heat":
         checked = ""
@@ -59,7 +64,8 @@ def my_form():
         checked = "Something broke"
     return render_template("form.html", targetTemp = targetTemp, \
                                         weatherString = weatherString, \
-                                        checked = checked)
+                                        checked = checked, \
+                                        daemonStatus = daemonStatus)
 
 @app.route("/", methods=['POST'])
 def my_form_post():
