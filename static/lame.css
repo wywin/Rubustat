@@ -57,8 +57,8 @@ body {
 }
 /* --> */
 
-.plus { margin: 0.5em auto; width: 4em; line-height: 4em; border: 20px solid black; font-size: 4em; text-align: center; }
-.minus { margin: 0.5em auto; width: 4em; line-height: 4em; border: 20px solid black; font-size: 4em; text-align: center; }
+.plus { margin: 0.1em auto; width: 256px; line-height: 256px; border: 10px solid black; font-size: 200px; text-align: center; font-weight:bold; }
+.minus { margin: 0.1em auto; width: 256px; line-height: 256px; border: 10px solid black; font-size: 200px; text-align: center; font-weight:bold; }
 
 li {
     list-style: none;
