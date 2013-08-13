@@ -10,5 +10,5 @@ ZIP = 37216
 #mail notifications to alert to potential hardware problems
 [mail]
 enabled = True
-
+errorThreshold = 5.0
 #additional mail config is done in mailconf.txt
