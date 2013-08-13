@@ -32,3 +32,5 @@ http://proto.io/freebies/onoff/
 http://blog.jacobean.net/?p=678
 
 http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
+
+http://segfault.in/2010/12/sending-gmail-from-python/
