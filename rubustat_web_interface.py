@@ -51,8 +51,11 @@ def my_form():
     try:
         with open('rubustatDaemon.pid'):
             pid = int(os.popen("cat rubustatDaemon.pid").read())
-            os.kill(pid, 0)
-            daemonStatus="<p id=\"daemonRunning\"> Daemon is running. </p>"
+            try:
+                os.kill(pid, 0)
+                daemonStatus="<p id=\"daemonRunning\"> Daemon is running. </p>"
+            except OSError:
+                daemonStatus="<p id=\"daemonNotRunning\"> DAEMON IS NOT RUNNING. </p>"
     except IOError:
         daemonStatus="<p id=\"daemonNotRunning\"> DAEMON IS NOT RUNNING. </p>"
 
