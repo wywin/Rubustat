@@ -3,3 +3,4 @@
 /logs/
 tempLogs.db
 *.pid
+mailconf.txt
