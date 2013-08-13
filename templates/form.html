@@ -16,8 +16,6 @@ function updateTemp() {
 		$('#indoorTempDiv').html(data["rounded_indoor_temp"]);
 	});
 }
-
-window.onload = updateTemp;
 window.setInterval(function(){
   updateTemp()
 }, 5000);
@@ -35,10 +33,9 @@ function updateWhatsOn() {
 })
 };
 
-window.onload = updateWhatsOn;
 window.setInterval(function(){
   updateWhatsOn()
-}, 5000);
+}, 10000);
 </script>
 
 <script type="application/javascript">
@@ -65,6 +62,9 @@ window.setInterval(function(){
 <!-- Makes them fancy buttons go -->
 <script type=text/javascript src="{{
   url_for('static', filename='increment.js') }}"></script>
+
+<body onload="updateWhatsOn(); updateTemp();">
+
 <div id="header">
 <center>
 {% with messages = get_flashed_messages() %}
