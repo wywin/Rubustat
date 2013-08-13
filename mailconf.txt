@@ -1,6 +1,8 @@
 [mailconf]
 SMTP_SERVER = ''
 SMTP_PORT = 
+username = ''
+password = ''
 sender = ''
 recipient = ''
 subject = ''
