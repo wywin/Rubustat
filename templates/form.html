@@ -23,6 +23,24 @@ window.setInterval(function(){
 }, 5000);
 </script>
 
+<script>
+function updateWhatsOn() {
+
+	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	$.ajax({
+    url : $SCRIPT_ROOT + "/_liveWhatsOn",
+    success : function(result){
+        $('#whatsOnSpan').html(result);
+    }
+})
+};
+
+window.onload = updateWhatsOn;
+window.setInterval(function(){
+  updateWhatsOn()
+}, 5000);
+</script>
+
 <script type="application/javascript">
 	window.addEventListener('load', function() {
 		var plus, minus;
@@ -99,7 +117,7 @@ window.setInterval(function(){
 				<br>
 				{{daemonStatus|safe}}
 				<br>
-				{{whatsOn|safe}}
+				<span id="whatsOnSpan"></span>
 				</center>
 			</div>
 			</center>

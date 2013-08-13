@@ -64,7 +64,7 @@ def my_form():
     try:
         weatherString = getWeather()
     except:
-        weatherString = "Couldn't get remote weather info!"
+        weatherString = "Couldn't get remote weather info! <br><br>"
 
     whatsOn = getWhatsOn()
 
@@ -126,5 +126,11 @@ def updateTemp():
     rounded_indoor_temp = round(indoor_temp,1)
     return jsonify(rounded_indoor_temp=rounded_indoor_temp)
 
+@app.route('/_liveWhatsOn', methods= ['GET'])
+def updateWhatsOn():
+
+    return getWhatsOn()
+
+
 if __name__ == "__main__":
-    app.run("0.0.0.0", port=80)
+    app.run("0.0.0.0", port=80, debug=True)

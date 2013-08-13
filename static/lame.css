@@ -108,17 +108,17 @@ p#fan{
 p#coolOn{
     color:#2FCCFF;
     font-size: 24pt;
-    font-weight:1500;
+    font-weight:bold;
 }
 p#heatOn{
     color:#FF0000;
     font-size: 24pt;
-    font-weight:1500;
+    font-weight:bold;
 }
 p#fanOn{
     color:#00CC00;
     font-size: 24pt;
-    font-weight:1500;
+    font-weight:bold;
 }
 /*the crazy switch bit*/
 
