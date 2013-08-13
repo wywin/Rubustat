@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import pywapi
 import os
+import subprocess
 import re
 import ConfigParser
 
@@ -22,7 +23,7 @@ config.read("config.txt")
 ZIP = config.get('main','ZIP')
 
 #start the daemon in the background
-os.popen("/usr/bin/python rubustat_daemon.py start")
+subprocess.Popen("/usr/bin/python rubustat_daemon.py start", shell=True)
 
 def getWeather():
     result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
@@ -50,7 +51,8 @@ def my_form():
 
     try:
         with open('rubustatDaemon.pid'):
-            pid = int(os.popen("cat rubustatDaemon.pid").read())
+            pid = int(subprocess.Popen("cat rubustatDaemon.pid", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+            print pid
             try:
                 os.kill(pid, 0)
                 daemonStatus="<p id=\"daemonRunning\"> Daemon is running. </p>"

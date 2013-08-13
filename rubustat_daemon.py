@@ -35,14 +35,14 @@ class rubustatDaemon(Daemon):
         GPIO.setup(HEATER_PIN, GPIO.OUT)
         GPIO.setup(AC_PIN, GPIO.OUT)
         GPIO.setup(FAN_PIN, GPIO.OUT)
-        os.popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export")
-        os.popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export")
-        os.popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export")
+        subprocess.Popen("echo " + str(HEATER_PIN) + " > /sys/class/gpio/export", shell=True)
+        subprocess.Popen("echo " + str(AC_PIN) + " > /sys/class/gpio/export", shell=True)
+        subprocess.Popen("echo " + str(FAN_PIN) + " > /sys/class/gpio/export", shell=True)
 
     def getHVACState(self):
-        heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
-        coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
-        fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
+        heatStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+        coolStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+        fanStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
 
         if heatStatus == 1 and fanStatus == 1:
             #heating
@@ -175,9 +175,9 @@ class rubustatDaemon(Daemon):
 
             #DEBUG stuff
             if DEBUG == 1:
-                heatStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value").read().strip())
-                coolStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value").read().strip())
-                fanStatus = int(os.popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value").read().strip())
+                heatStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+                coolStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+                fanStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
                 log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                 log.write("Report at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + ":\n")
                 log.write("hvac_state = " + str(hvac_state)+ "\n")
@@ -195,7 +195,7 @@ if __name__ == "__main__":
         daemon = rubustatDaemon('rubustatDaemon.pid')
       
         #Setting up logs
-        os.popen("mkdir logs")
+        subprocess.Popen("mkdir logs", shell=True)
 
         conn = sqlite3.connect("tempLogs.db")
         c = conn.cursor()
