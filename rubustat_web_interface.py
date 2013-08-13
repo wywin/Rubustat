@@ -48,8 +48,8 @@ def my_form():
     #find out what mode the system is in, and set the switch accordingly
     #the switch is in the "cool" position when the checkbox is checked
 
-    pid = int(os.popen("cat rubustatDaemon.pid").read())
     try:
+        pid = int(os.popen("cat rubustatDaemon.pid").read())
         os.kill(pid, 0)
         daemonStatus="<p id=\"daemonRunning\"> Daemon is running. </p>"
     except OSError:
