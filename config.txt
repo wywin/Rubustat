@@ -6,3 +6,9 @@ HEATER_PIN = 23
 AC_PIN = 25
 FAN_PIN = 24
 ZIP = 37216
+
+#mail notifications to alert to potential hardware problems
+[mail]
+enabled = True
+
+#additional mail config is done in mailconf.txt
