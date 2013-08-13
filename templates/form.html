@@ -76,7 +76,7 @@ window.setInterval(function(){
 			<input type="text" id="target" name="target" value={{ targetTemp }}>
 			<div class="minus" id="minus">-</div>
 			<br><br>
-			{{daemonStatus|safe}}
+
 		    </center>
 		</div>
 
@@ -94,9 +94,12 @@ window.setInterval(function(){
 				Current target temp:
 				<br>
 				<p id="targetTemp">{{targetTemp}}&deg;</p>
-				
 				<br><br>
 				<input type="submit" style="height: 150px; width: 150px" id="goButton" class="goButton" value="Go!">
+				<br>
+				{{daemonStatus|safe}}
+				<br>
+				{{whatsOn|safe}}
 				</center>
 			</div>
 			</center>

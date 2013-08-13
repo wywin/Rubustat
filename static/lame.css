@@ -76,9 +76,11 @@ input[type="text"] {
 }
 p#currentTemp {
     font-size: 64pt;
+    margin: 0px;
 }
 p#targetTemp {
     font-size: 64pt;
+    margin: 0px;
 }
 p#daemonRunning{
     font-size: 16pt;
@@ -88,6 +90,34 @@ p#daemonRunning{
 p#daemonNotRunning{
     font-size: 64pt;
     color:#FF0000;
+    font-weight:1500;
+}
+p#cool{
+    color:#2FCCFF;
+    font-size: 12pt;
+}
+p#heat{
+    color:#FF0000;
+    font-size: 12pt;
+
+}
+p#fan{
+    color:#00CC00;
+    font-size: 12pt;
+}
+p#coolOn{
+    color:#2FCCFF;
+    font-size: 24pt;
+    font-weight:1500;
+}
+p#heatOn{
+    color:#FF0000;
+    font-size: 24pt;
+    font-weight:1500;
+}
+p#fanOn{
+    color:#00CC00;
+    font-size: 24pt;
     font-weight:1500;
 }
 /*the crazy switch bit*/

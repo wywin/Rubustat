@@ -21,6 +21,9 @@ os.chdir(dname)
 config = ConfigParser.ConfigParser()
 config.read("config.txt")
 ZIP = config.get('main','ZIP')
+HEATER_PIN = int(config.get('main','HEATER_PIN'))
+AC_PIN = int(config.get('main','AC_PIN'))
+FAN_PIN = int(config.get('main','FAN_PIN'))
 
 #start the daemon in the background
 subprocess.Popen("/usr/bin/python rubustat_daemon.py start", shell=True)
@@ -35,6 +38,23 @@ def getWeather():
     string = string.replace("<br /><a href=\"http://us.rd.yahoo.com/dailynews/rss/weather/Nashville__TN/*http://weather.yahoo.com/forecast/USTN0357_f.html\">Full Forecast at Yahoo! Weather</a><BR/><BR/>", "")
     return string
 
+def getWhatsOn():
+    heatStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+    coolStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+    fanStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(FAN_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+
+    heatString = "<p id=\"heat\"> OFF </p>"
+    coolString = "<p id=\"cool\"> OFF </p>"
+    fanString = "<p id=\"fan\"> OFF </p>"
+    if heatStatus == 1:
+        heatString = "<p id=\"heatOn\"> ON </p>"
+    if coolStatus == 1:
+        coolString = "<p id=\"coolOn\"> ON </p>"
+    if fanStatus == 1:
+        fanString = "<p id=\"fanOn\"> ON </p>"
+
+    return heatString + coolString + fanString
+
 @app.route('/')
 def my_form():
     f = open("status", "r")
@@ -46,13 +66,14 @@ def my_form():
     except:
         weatherString = "Couldn't get remote weather info!"
 
+    whatsOn = getWhatsOn()
+
     #find out what mode the system is in, and set the switch accordingly
     #the switch is in the "cool" position when the checkbox is checked
 
     try:
         with open('rubustatDaemon.pid'):
             pid = int(subprocess.Popen("cat rubustatDaemon.pid", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
-            print pid
             try:
                 os.kill(pid, 0)
                 daemonStatus="<p id=\"daemonRunning\"> Daemon is running. </p>"
@@ -71,7 +92,8 @@ def my_form():
     return render_template("form.html", targetTemp = targetTemp, \
                                         weatherString = weatherString, \
                                         checked = checked, \
-                                        daemonStatus = daemonStatus)
+                                        daemonStatus = daemonStatus, \
+                                        whatsOn = whatsOn)
 
 @app.route("/", methods=['POST'])
 def my_form_post():
