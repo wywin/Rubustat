@@ -12,10 +12,13 @@
 <script>
 function updateTemp() {
 	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-	$.getJSON($SCRIPT_ROOT+"/_liveTemp", function(data){
-		$('#indoorTempDiv').html(data["rounded_indoor_temp"]);
-	});
-}
+	$.ajax({
+    url : $SCRIPT_ROOT + "/_liveTemp",
+    success : function(result){
+        $('#indoorTempDiv').html(result);
+    }
+})
+};
 window.setInterval(function(){
   updateTemp()
 }, 5000);
@@ -37,6 +40,24 @@ window.setInterval(function(){
   updateWhatsOn()
 }, 10000);
 </script>
+
+<script>
+function updateDaemonStatus() {
+
+	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	$.ajax({
+    url : $SCRIPT_ROOT + "/_liveDaemonStatus",
+    success : function(result){
+        $('#daemonStatusSpan').html(result);
+    }
+})
+};
+
+window.setInterval(function(){
+  updateDaemonStatus()
+}, 30000);
+</script>
+
 
 <script type="application/javascript">
 	window.addEventListener('load', function() {
@@ -63,7 +84,7 @@ window.setInterval(function(){
 <script type=text/javascript src="{{
   url_for('static', filename='increment.js') }}"></script>
 
-<body onload="updateWhatsOn(); updateTemp();">
+<body onload="updateTemp(); updateWhatsOn(); updateDaemonStatus();">
 
 <div id="header">
 <center>
@@ -115,7 +136,7 @@ window.setInterval(function(){
 				<br><br>
 				<input type="submit" style="height: 150px; width: 150px" id="goButton" class="goButton" value="Go!">
 				<br>
-				{{daemonStatus|safe}}
+				<span id="daemonStatusSpan"></span>
 				<span id="whatsOnSpan"></span>
 				</center>
 			</div>

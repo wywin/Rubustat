@@ -1,12 +1,12 @@
 #!/usr/bin/python
-import pywapi
 import os
 import subprocess
 import re
 import ConfigParser
 
-from getIndoorTemp import getIndoorTemp
+import pywapi
 
+from getIndoorTemp import getIndoorTemp
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash, jsonify
 
@@ -55,6 +55,19 @@ def getWhatsOn():
 
     return heatString + coolString + fanString
 
+def getDaemonStatus():
+
+    try:
+        with open('rubustatDaemon.pid'):
+            pid = int(subprocess.Popen("cat rubustatDaemon.pid", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
+            try:
+                os.kill(pid, 0)
+                return "<p id=\"daemonRunning\"> Daemon is running. </p>"
+            except OSError:
+                return "<p id=\"daemonNotRunning\"> DAEMON IS NOT RUNNING. </p>"
+    except IOError:
+        return "<p id=\"daemonNotRunning\"> DAEMON IS NOT RUNNING. </p>"
+
 @app.route('/')
 def my_form():
     f = open("status", "r")
@@ -71,17 +84,7 @@ def my_form():
     #find out what mode the system is in, and set the switch accordingly
     #the switch is in the "cool" position when the checkbox is checked
 
-    try:
-        with open('rubustatDaemon.pid'):
-            pid = int(subprocess.Popen("cat rubustatDaemon.pid", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
-            try:
-                os.kill(pid, 0)
-                daemonStatus="<p id=\"daemonRunning\"> Daemon is running. </p>"
-            except OSError:
-                daemonStatus="<p id=\"daemonNotRunning\"> DAEMON IS NOT RUNNING. </p>"
-    except IOError:
-        daemonStatus="<p id=\"daemonNotRunning\"> DAEMON IS NOT RUNNING. </p>"
-
+    daemonStatus=getDaemonStatus()
 
     if mode == "heat":
         checked = ""
@@ -119,17 +122,24 @@ def my_form_post():
         flash("That is not a two digit number! Try again!")
         return redirect(url_for('my_form'))
 
+
+#the flask views for the incredible and probably
+#not at all standards compliant live data
+
 @app.route('/_liveTemp', methods= ['GET'])
 def updateTemp():
 
-    indoor_temp=getIndoorTemp()
-    rounded_indoor_temp = round(indoor_temp,1)
-    return jsonify(rounded_indoor_temp=rounded_indoor_temp)
+    return str(round(getIndoorTemp(),1))
 
 @app.route('/_liveWhatsOn', methods= ['GET'])
 def updateWhatsOn():
 
     return getWhatsOn()
+
+@app.route('/_liveDaemonStatus', methods= ['GET'])
+def updateDaemonStatus():
+
+    return getDaemonStatus()
 
 
 if __name__ == "__main__":
