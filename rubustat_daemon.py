@@ -145,12 +145,20 @@ class rubustatDaemon(Daemon):
             if mailEnabled and (mailElapsed > datetime.timedelta(minutes=20)) and (indoorTemp - float(targetTemp) ) > errorThreshold:
                 self.sendErrorMail()
                 lastMail = datetime.datetime.now()
+                if DEBUG == 1:
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                    log.write("MAIL: Sent mail to " + recipient + " at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
+                    log.close()
 
             #heat 
             #it's 72, we want it to be 78, and the error threshold is 5 = this triggers
             if mailEnabled and (mailElapsed > datetime.timedelta(minutes=20)) and (float(targetTemp) - indoorTemp ) > errorThreshold:
                 self.sendErrorMail()
                 lastMail = datetime.datetime.now()
+                if DEBUG == 1:
+                    log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
+                    log.write("MAIL: Sent mail to " + recipient + " at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
+                    log.close()
 
             if logElapsed > datetime.timedelta(minutes=6):
                 c.execute('INSERT INTO logging VALUES(?, ?, ?)', (now, indoorTemp, targetTemp))
