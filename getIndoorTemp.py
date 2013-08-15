@@ -7,7 +7,6 @@ import glob
 import time
 
 def getIndoorTemp():
-
     subprocess.Popen('modprobe w1-gpio', shell=True)
     subprocess.Popen('modprobe w1-therm', shell=True)
     base_dir = '/sys/bus/w1/devices/'
