@@ -2,7 +2,7 @@
 
 #thanks to http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/
 
-import sys, os, time, atexit
+import sys, os, time, atexit, subprocess, re
 from signal import SIGTERM 
 
 class Daemon:
@@ -65,16 +65,19 @@ class Daemon:
         os.remove(self.pidfile)
 
     def checkStalePid(self, pid):
+        #is there a process with this pid?
         try:
             os.kill(pid, 0)
-            return False
         except OSError:
+            #there's no process with that pid, so the pidfile is stale!
             return True
-
-    def removeStalePid(self):
-        os.remove(self.pidfile)
-        message = "Stale pidfile %s detected. Deleting and starting daemon \n"
-        sys.stdout.write(message % self.pidfile)
+        #there is a process with the given pid. Is it the daemon?
+        cmdline = subprocess.Popen("cat /proc/" + str(pid) + "/cmdline", shell=True, stdout=subprocess.PIPE).stdout.read()
+        match = re.search(r'rubustat_daemon.py',cmdline)
+        if match:
+            #the pidfile points to an active instance of the daemon. pidfile is not stale.
+            return False
+        return True
 
     def start(self):
         """
