@@ -4,8 +4,6 @@ import subprocess
 import re
 import ConfigParser
 
-import pywapi
-
 from getIndoorTemp import getIndoorTemp
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash, jsonify
@@ -24,19 +22,22 @@ ZIP = config.get('main','ZIP')
 HEATER_PIN = int(config.get('main','HEATER_PIN'))
 AC_PIN = int(config.get('main','AC_PIN'))
 FAN_PIN = int(config.get('main','FAN_PIN'))
+weatherEnabled = config.get('weather','enabled')
 
 #start the daemon in the background
 subprocess.Popen("/usr/bin/python rubustat_daemon.py start", shell=True)
 
-def getWeather():
-    result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
-    string = result['html_description']
-    string = string.replace("\n", "")
+if weatherEnabled == True:
+    import pywapi
+    def getWeather():
+        result = pywapi.get_weather_from_yahoo( str(ZIP), units = 'imperial' )
+        string = result['html_description']
+        string = string.replace("\n", "")
 
-    #You will likely have to change these strings, unless you don't mind the additional garbage at the end.
-    string = string.replace("(provided by <a href=\"http://www.weather.com\" >The Weather Channel</a>)<br/>", "")
-    string = string.replace("<br /><a href=\"http://us.rd.yahoo.com/dailynews/rss/weather/Nashville__TN/*http://weather.yahoo.com/forecast/USTN0357_f.html\">Full Forecast at Yahoo! Weather</a><BR/><BR/>", "")
-    return string
+        #You will likely have to change these strings, unless you don't mind the additional garbage at the end.
+        string = string.replace("(provided by <a href=\"http://www.weather.com\" >The Weather Channel</a>)<br/>", "")
+        string = string.replace("<br /><a href=\"http://us.rd.yahoo.com/dailynews/rss/weather/Nashville__TN/*http://weather.yahoo.com/forecast/USTN0357_f.html\">Full Forecast at Yahoo! Weather</a><BR/><BR/>", "")
+        return string
 
 def getWhatsOn():
     heatStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
@@ -74,10 +75,13 @@ def my_form():
     targetTemp = f.readline().strip()
     mode = f.readline()
     f.close()
-    try:
-        weatherString = getWeather()
-    except:
-        weatherString = "Couldn't get remote weather info! <br><br>"
+    weatherString = ""
+    if weatherEnabled == True:
+        try:
+            weatherString = getWeather()
+        except:
+            weatherString = "Couldn't get remote weather info! <br><br>"
+        
 
     whatsOn = getWhatsOn()
 
