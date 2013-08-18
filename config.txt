@@ -1,14 +1,35 @@
 [main]
+
+#dictates logging
 DEBUG = 1
+
+#These two are difficult to explain.
+#Let's say we want it to be 75, and it's in cooling mode.
+#if the active_hysteresis is 0.5, it will cool to 74.5 before shutting off.
+#on the other side, if the inactive_hysteresis is 1, the system will allow 
+#the indoor temp to reach 76 before turning cooling back on.
+
+#adjust them to the particulars of your system / personal preference
+
 active_hysteresis = 0.0
 inactive_hysteresis = 0.5
+
 HEATER_PIN = 23
 AC_PIN = 25
 FAN_PIN = 24
+
+#your zip/postal code. No idea if this works outside the US.
 ZIP = 37216
 
 #mail notifications to alert to potential hardware problems
 [mail]
 enabled = True
+
+#how many degrees the indoor temperature can stray from the target
+#before sending alert email
 errorThreshold = 5.0
-#additional mail config is done in mailconf.txt
+
+#additional mail config (servers and such) is done in mailconf.txt
+
+[sqlite]
+enabled = False
