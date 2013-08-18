@@ -33,3 +33,7 @@ errorThreshold = 5.0
 
 [sqlite]
 enabled = False
+
+#if you want external weather data on the web UI
+[weather]
+enabled = True
