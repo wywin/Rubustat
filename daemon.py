@@ -93,7 +93,7 @@ class Daemon:
         if pid:
             stale = self.checkStalePid(pid)
         if pid and not stale:
-            message = "pidfile %s already exist. Daemon already running?\n"
+            message = "pidfile %s already exists. Daemon already running?\n"
             sys.stderr.write(message % self.pidfile)
             sys.exit(1)
         if pid and stale:
