@@ -8,13 +8,15 @@ http://makeatronics.blogspot.com/2013/04/thermostat-software.html
 
 but now with user-friendly web interface!
 
-Dependencies:
-* pywapi for weather info (sudo pip install pywapi)
+#Dependencies
 * RPi.GPIO (you probably already have it installed on your Pi)
 * Flask (sudo apt-get install python-flask on Ubuntu, Debian, and likely other apt based distros)
-* sqlite (sudo apt-get install python-sqlite sqlite3)
 
-###Credits###
+##Optional (required if enabled in config.txt)
+* sqlite for less-sloppy logging (sudo apt-get install python-sqlite sqlite3)
+* pywapi for weather info (sudo pip install pywapi)
+
+###Credits
 http://matthewjamestaylor.com/blog/equal-height-columns-2-column.htm
 
 https://github.com/ftlabs/fastclick
