@@ -6,7 +6,6 @@ import os
 import time
 import RPi.GPIO as GPIO
 import datetime
-import sqlite3
 import ConfigParser
 
 from daemon import Daemon
@@ -17,6 +16,7 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
+#read values from the config file
 config = ConfigParser.ConfigParser()
 config.read("config.txt")
 DEBUG = int(config.get('main','DEBUG'))
@@ -26,9 +26,13 @@ HEATER_PIN = int(config.get('main','HEATER_PIN'))
 AC_PIN = int(config.get('main','AC_PIN'))
 FAN_PIN = int(config.get('main','FAN_PIN'))
 
+sqliteEnabled = config.get('sqlite','enabled')
+if sqliteEnabled == True:
+    import sqlite3
+
 #mail config
-mailEnabled = bool(config.get('mail', 'enabled'))
-if mailEnabled:
+mailEnabled = config.get('mail', 'enabled')
+if mailEnabled == True:
     import smtplib
 
     config.read("mailconf.txt")
@@ -41,6 +45,7 @@ if mailEnabled:
     subject = config.get('mailconf','subject')
     body = config.get('mailconf','body')
     errorThreshold = float(config.get('mail','errorThreshold'))
+
 
 
 class rubustatDaemon(Daemon):
@@ -101,7 +106,7 @@ class rubustatDaemon(Daemon):
         time.sleep(360)
         return 0
 
-    if mailEnabled:
+    if mailEnabled == True:
         def sendErrorMail(self):
             headers = ["From: " + sender,
                        "Subject: " + subject,
@@ -111,6 +116,8 @@ class rubustatDaemon(Daemon):
             headers = "\r\n".join(headers)
             session = smtplib.SMTP(SMTP_SERVER, SMTP_PORT) 
             session.ehlo()
+            #you may need to comment this line out if you're a crazy person
+            #and use non-tls SMTP servers
             session.starttls()
             session.ehlo
             session.login(username, password)
@@ -140,9 +147,10 @@ class rubustatDaemon(Daemon):
             logElapsed = now - lastLog
             mailElapsed = now - lastMail
 
+            ### check if we need to send error mail
             #cooling 
             #it's 78, we want it to be 72, and the error threshold is 5 = this triggers
-            if mailEnabled and (mailElapsed > datetime.timedelta(minutes=20)) and (indoorTemp - float(targetTemp) ) > errorThreshold:
+            if mailEnabled == True and (mailElapsed > datetime.timedelta(minutes=20)) and (indoorTemp - float(targetTemp) ) > errorThreshold:
                 self.sendErrorMail()
                 lastMail = datetime.datetime.now()
                 if DEBUG == 1:
@@ -152,7 +160,7 @@ class rubustatDaemon(Daemon):
 
             #heat 
             #it's 72, we want it to be 78, and the error threshold is 5 = this triggers
-            if mailEnabled and (mailElapsed > datetime.timedelta(minutes=20)) and (float(targetTemp) - indoorTemp ) > errorThreshold:
+            if mailEnabled == True and (mailElapsed > datetime.timedelta(minutes=20)) and (float(targetTemp) - indoorTemp ) > errorThreshold:
                 self.sendErrorMail()
                 lastMail = datetime.datetime.now()
                 if DEBUG == 1:
@@ -160,7 +168,10 @@ class rubustatDaemon(Daemon):
                     log.write("MAIL: Sent mail to " + recipient + " at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                     log.close()
 
-            if logElapsed > datetime.timedelta(minutes=6):
+
+            #logging actual temp and indoor temp to sqlite database.
+            #you can do fun things with this data, like make charts! 
+            if logElapsed > datetime.timedelta(minutes=6) and sqliteEnabled:
                 c.execute('INSERT INTO logging VALUES(?, ?, ?)', (now, indoorTemp, targetTemp))
                 conn.commit()
                 lastLog = datetime.datetime.now()
@@ -230,7 +241,7 @@ class rubustatDaemon(Daemon):
             else:
                 print "It broke."
 
-            #DEBUG stuff
+            #loggin'stuff
             if DEBUG == 1:
                 heatStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(HEATER_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
                 coolStatus = int(subprocess.Popen("cat /sys/class/gpio/gpio" + str(AC_PIN) + "/value", shell=True, stdout=subprocess.PIPE).stdout.read().strip())
@@ -255,9 +266,10 @@ if __name__ == "__main__":
         if not os.path.exists("logs"):
             subprocess.Popen("mkdir logs", shell=True)
 
-        conn = sqlite3.connect("tempLogs.db")
-        c = conn.cursor()
-        c.execute('CREATE TABLE IF NOT EXISTS logging (datetime TIMESTAMP, actualTemp FLOAT, targetTemp INT)')    
+        if sqliteEnabled == True:
+            conn = sqlite3.connect("temperatureLogs.db")
+            c = conn.cursor()
+            c.execute('CREATE TABLE IF NOT EXISTS logging (datetime TIMESTAMP, actualTemp FLOAT, targetTemp INT)')    
 
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
