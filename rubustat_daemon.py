@@ -26,12 +26,12 @@ HEATER_PIN = int(config.get('main','HEATER_PIN'))
 AC_PIN = int(config.get('main','AC_PIN'))
 FAN_PIN = int(config.get('main','FAN_PIN'))
 
-sqliteEnabled = config.get('sqlite','enabled')
+sqliteEnabled = config.getboolean('sqlite','enabled')
 if sqliteEnabled == True:
     import sqlite3
 
 #mail config
-mailEnabled = config.get('mail', 'enabled')
+mailEnabled = config.getboolean('mail', 'enabled')
 if mailEnabled == True:
     import smtplib
 
