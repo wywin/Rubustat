@@ -22,7 +22,7 @@ ZIP = config.get('main','ZIP')
 HEATER_PIN = int(config.get('main','HEATER_PIN'))
 AC_PIN = int(config.get('main','AC_PIN'))
 FAN_PIN = int(config.get('main','FAN_PIN'))
-weatherEnabled = config.get('weather','enabled')
+weatherEnabled = config.getboolean('weather','enabled')
 
 #start the daemon in the background
 subprocess.Popen("/usr/bin/python rubustat_daemon.py start", shell=True)
@@ -81,7 +81,6 @@ def my_form():
             weatherString = getWeather()
         except:
             weatherString = "Couldn't get remote weather info! <br><br>"
-        
 
     whatsOn = getWhatsOn()
 
