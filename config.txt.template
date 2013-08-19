@@ -18,9 +18,6 @@ HEATER_PIN =
 AC_PIN = 
 FAN_PIN = 
 
-#your zip/postal code. No idea if this works outside the US.
-ZIP = 
-
 #mail notifications to alert to potential hardware problems
 [mail]
 enabled = False
@@ -37,3 +34,5 @@ enabled = False
 #if you want external weather data on the web UI
 [weather]
 enabled = False
+#your zip/postal code. No idea if this works outside the US.
+ZIP = 

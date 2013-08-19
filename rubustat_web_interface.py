@@ -18,7 +18,7 @@ os.chdir(dname)
 
 config = ConfigParser.ConfigParser()
 config.read("config.txt")
-ZIP = config.get('main','ZIP')
+ZIP = config.get('weather','ZIP')
 HEATER_PIN = int(config.get('main','HEATER_PIN'))
 AC_PIN = int(config.get('main','AC_PIN'))
 FAN_PIN = int(config.get('main','FAN_PIN'))
