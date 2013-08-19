@@ -23,7 +23,7 @@ means ***BIG NUMBERS!***
 ##Installation
 
 1. git clone https://github.com/wywin/Rubustat.git
-2. edit config.txt with appropriate values
+2. copy config.txt.template to config.txt and edit with appropriate values
 3. copy mailconf.txt.template to mailconf.txt and fill in values (if using error mails)
 4. (optional) add web interface to startup. I added the lines
 
@@ -47,6 +47,23 @@ before the web interface call because it was throwing fits without the pre-call 
 I would LOVE if you [threw me an email](mailto:rubustatcontact@wyattwinters.com) if you decide to use any of this code for your own RPi-based thermostat.
 It doesn't have to be long or involved, but knowing my work is used outside of my house would be great!
 
+
+###Code Map
+
+#####The configs
+* config.txt.template - the main config file, heavily commented to help you make sense of it. Enable optional features here!
+* mailconf.txt.template - a template for the mail configuration. Fill in the values, enable mail in config.txt, and 
+  get helpful error email alerts! These are used to hopefully inform you of potential hardware issues. This is from when
+  one of my alligator clips fell off, and it was really hot when I got home.
+* status - target temperature (in degrees F, because I'm an awful American) and mode (cool or heat) - this can be edited by hand,
+  or via the web UI
+#####The code
+* daemon.py - the underlying daemon class from [here](http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/). 
+  I added on some stale-pid checking.
+* rubustat_daemon.py - the proper daemon. Reads from status, controls the GPIO pins, and does email and sqlite logging, if enabled
+* rubustat_web_interface.py - the web interface. Auto launches rubustat_daemon.py, and writes to status. Optionally displays local weather conditions,
+  dictated through ZIP in config.txt. You will have to adjust getWeather to strip off the annoying link from the bot.
+* static/ and templates/ - various html, css, and js to make the web interface fancy. NOT AT ALL standards compliant, but it works, so I'm happy with it.
 
 ####Credits
 In no particular order:
