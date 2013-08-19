@@ -57,6 +57,8 @@ It doesn't have to be long or involved, but knowing my work is used outside of m
   one of my alligator clips fell off, and it was really hot when I got home.
 * status - target temperature (in degrees F, because I'm an awful American) and mode (cool or heat) - this can be edited by hand,
   or via the web UI
+
+  
 #####The code
 * daemon.py - the underlying daemon class from [here](http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/). 
   I added on some stale-pid checking.
