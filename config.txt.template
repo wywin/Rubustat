@@ -1,7 +1,7 @@
 [main]
 
 #dictates logging
-DEBUG = 1
+DEBUG = 0
 
 #These two are difficult to explain.
 #Let's say we want it to be 75, and it's in cooling mode.
@@ -11,23 +11,23 @@ DEBUG = 1
 
 #adjust them to the particulars of your system / personal preference
 
-active_hysteresis = 0.0
-inactive_hysteresis = 0.5
+active_hysteresis = 
+inactive_hysteresis = 
 
-HEATER_PIN = 23
-AC_PIN = 25
-FAN_PIN = 24
+HEATER_PIN = 
+AC_PIN = 
+FAN_PIN = 
 
 #your zip/postal code. No idea if this works outside the US.
-ZIP = 37216
+ZIP = 
 
 #mail notifications to alert to potential hardware problems
 [mail]
-enabled = True
+enabled = False
 
 #how many degrees the indoor temperature can stray from the target
 #before sending alert email
-errorThreshold = 5.0
+errorThreshold = 
 
 #additional mail config (servers and such) is done in mailconf.txt
 
@@ -36,4 +36,4 @@ enabled = False
 
 #if you want external weather data on the web UI
 [weather]
-enabled = True
+enabled = False
