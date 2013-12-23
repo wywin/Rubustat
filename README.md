@@ -11,6 +11,23 @@ but now with user-friendly web interface!
 ***NOTE*** I am not a designer, and this UI was primarily for my dad / his phone. Small screens + aging eyes
 means ***BIG NUMBERS!***
 
+##Contact
+
+I would LOVE if you [threw me an email](mailto:rubustatcontact@wyattwinters.com) if you decide to use any of this code for your own RPi-based thermostat.
+It doesn't have to be long or involved, but knowing my work is used outside of my house would be great!
+
+##Pictures!
+
+There's a picture of my hardware, and screenshots of the UI on desktop and mobile browsers over on [my blog](http://wyattwinters.com/rubustat-the-raspberry-pi-thermostat.html).
+
+##Hardware
+
+*Raspberry Pi (A or B should work)
+*Some way to hook up the GPIO pins to the thermostat hookups in your wall (I used this [nice pre-made board](http://makeatronics.blogspot.com/2013/06/24v-ac-solid-state-relay-board.html) explicitly for this purpose!)
+**If using the board above, you should also get everything off the [parts list](https://docs.google.com/spreadsheet/ccc?key=0AtDuE3f5Cnm7dEU3MWFEeTU0RnZyTUNfVUxrX1FVdXc&usp=sharing)(Google Docs, which now requires an account?)
+*A temperature sensor. This was written with the [DS18B20](https://www.adafruit.com/products/374), but it should be pretty easy to code up your own function for your specific sensor your have on hand
+*Some way to hook your RPi up to your network. This project is infinitely more helpful when you can access the web interface. 
+
 ##Dependencies
 * RPi.GPIO (you probably already have it installed on your Pi)
 * Flask (sudo apt-get install python-flask on Ubuntu, Debian, Raspbian, and likely other apt based distros)
@@ -42,12 +59,6 @@ modprobe w1-therm
 to /etc/rc.local, and it works without a hitch. Although the modprobes are also in getIndoorTemp, I added them
 before the web interface call because it was throwing fits without the pre-call modprobes... ¯\\_(ツ)_/¯
 
-##Contact
-
-I would LOVE if you [threw me an email](mailto:rubustatcontact@wyattwinters.com) if you decide to use any of this code for your own RPi-based thermostat.
-It doesn't have to be long or involved, but knowing my work is used outside of my house would be great!
-
-
 ###Code Map
 
 #####The configs
@@ -62,9 +73,9 @@ It doesn't have to be long or involved, but knowing my work is used outside of m
 #####The code
 * daemon.py - the underlying daemon class from [here](http://www.jejik.com/articles/2007/02/a_simple_unix_linux_daemon_in_python/). 
   I added on some stale-pid checking.
-* rubustat_daemon.py - the proper daemon. Reads from status, controls the GPIO pins, and does email and sqlite logging, if enabled
+* rubustat_daemon.py - the proper daemon. Reads from status, controls the GPIO pins, and does email notifications, if enabled, and sqlite logging, if enabled
 * rubustat_web_interface.py - the web interface. Auto launches rubustat_daemon.py, and writes to status. Optionally displays local weather conditions,
-  dictated through ZIP in config.txt. You will have to adjust getWeather to strip off the annoying link from the bot.
+  dictated by the ZIP code in config.txt. You will have to adjust getWeather to strip off the annoying link from the bottom of the API result.
 * static/ and templates/ - various html, css, and js to make the web interface fancy. NOT AT ALL standards compliant, but it works, so I'm happy with it.
 
 ####Credits
