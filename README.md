@@ -16,13 +16,19 @@ means ***BIG NUMBERS!***
 I would LOVE if you [threw me an email](mailto:rubustatcontact@wyattwinters.com) if you decide to use any of this code for your own RPi-based thermostat.
 It doesn't have to be long or involved, but knowing my work is used outside of my house would be great!
 
+If you want to donate, you can send me BTC at 1Dz6YehDXZk2GBCYi9SfWRSPZAEndmQxk5, or donate to other, bigger open source projects that will actually use the funding to further development. On the topic of RPi, why not [Raspbian](http://www.raspbian.org/RaspbianDonate)?
+
+##Forks!
+
+@aneisch has forked this project, and is adding cool stuff like scheduling! You can find his fork either from the fork menu, or just click [here](https://github.com/aneisch/Rubustat). Thanks for doing cool stuff @aneisch!
+
 ##Pictures!
 
 There's a picture of my hardware, and screenshots of the UI on desktop and mobile browsers over on [my blog](http://wyattwinters.com/rubustat-the-raspberry-pi-thermostat.html).
 
 ##Hardware
 
-* Raspberry Pi (A or B should work)
+* Raspberry Pi (A, B, or B+ should work)
 * Some way to hook up the GPIO pins to the thermostat hookups in your wall (I used this [nice pre-made board](http://makeatronics.blogspot.com/2013/06/24v-ac-solid-state-relay-board.html) explicitly for this purpose!)
 * If using the board above, you should also get everything off the [parts list](https://docs.google.com/spreadsheet/ccc?key=0AtDuE3f5Cnm7dEU3MWFEeTU0RnZyTUNfVUxrX1FVdXc&usp=sharing)(Google Docs, which now requires an account?)
 * A temperature sensor. This was written with the [DS18B20](https://www.adafruit.com/products/374), but it should be pretty easy to code up your own function for your specific sensor your have on hand
