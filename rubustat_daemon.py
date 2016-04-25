@@ -199,7 +199,7 @@ class rubustatDaemon(Daemon):
                             log = open("logs/debug_" + datetime.datetime.now().strftime('%Y%m%d') + ".log", "a")
                             log.write("STATE: Switching to idle at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()) + "\n")
                             log.close()
-                        hvacState = idle()
+                        hvacState = self.idle()
 
                 elif hvacState == -1: # it's cold out, why is the AC running?
                         if DEBUG == 1:
